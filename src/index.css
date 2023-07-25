@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap");
 
 @layer base {
   body {
@@ -9,12 +10,6 @@
   }
   button {
     @apply cursor-pointer;
-  }
-  .link {
-    @apply no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer;
-  }
-  .center {
-    @apply flex justify-center;
   }
 }
 
@@ -25,7 +20,16 @@
     /* background-image: theme('backgroundImage.logo-image'); */
   }
   .image-link-form {
-    @apply w-1/2 bg-cover bg-no-repeat bg-center bg-[url('./components/ImageLinkForm/topography.svg')];
+    @apply sm:w-4/5 md:w-1/2 bg-cover bg-no-repeat bg-center bg-[url('./components/ImageLinkForm/topography.svg')];
     background-color: #eccc48;
+  }
+}
+
+@layer utilities {
+  .link {
+    @apply no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer;
+  }
+  .center {
+    @apply flex justify-center;
   }
 }

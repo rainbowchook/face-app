@@ -6,6 +6,9 @@ module.exports = {
       backgroundImage: {
         'logo-image': "url('./components/Logo/brain.png')",
       },
+      fontFamily: {
+        ysabeau: ['Ysabeau SC', 'sans-serif'],
+      },
     },
   },
   plugins: [],
