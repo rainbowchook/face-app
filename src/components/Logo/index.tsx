@@ -18,7 +18,7 @@ const Logo: React.FC = () => {
           src="./images/brain.png"
         />
         <a
-          className="text-[12px] text-indigo-700/60"
+          className="text-[8px] text-white"
           target="_blank"
           rel="noopener noreferrer"
           href="https://www.freepik.com/icon/artificial-intelligence_1122577#position=87&page=1&term=brain&fromView=keyword"

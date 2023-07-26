@@ -1,13 +1,11 @@
-import React from 'react'
-
 const ImageLinkForm = () => {
   return (
     <>
-      <p className="text-2xl">{'Upload picture to detect face'}</p>
+      <p className="text-2xl mt-3">{'Upload picture to detect face'}</p>
       <div className="flex justify-center">
-        <div className="image-link-form p-8 rounded-lg shadow-xl">
+        <div className="image-link-form p-6 rounded-lg shadow-xl">
           <input
-            className="text-xl px-4 py-2 mx-auto w-3/4"
+            className="font-sans text-xl text-black px-4 py-2 mx-auto w-3/4"
             type="text"
             placeholder="Enter URL here"
             aria-placeholder="Enter URL here"

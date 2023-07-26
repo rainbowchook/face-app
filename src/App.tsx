@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
-import Navigation from './components/Navigation';
+import ParticleBackground from './components/ParticleBackground'
+import Navigation from './components/Navigation'
 import Logo from './components/Logo'
-import ImageLinkForm from './components/ImageLinkForm';
-import Rank from './components/Rank';
+import ImageLinkForm from './components/ImageLinkForm'
+import Rank from './components/Rank'
 
-class App extends Component {
-  render() {
-    return (
-      <div>
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm />
-        {/* <FaceRecognition /> */}
-      </div>
-    );
-  }
-  
+const App: React.FC = () => {
+
+  return (
+    <div>
+      <ParticleBackground />
+      <Navigation />
+      <Logo />
+      <Rank />
+      <ImageLinkForm />
+      {/* <FaceRecognition /> */}
+    </div>
+  )
 }
 
-export default App;
+export default App

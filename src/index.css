@@ -1,15 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url("https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap");
+
+/* @import url('https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap'); */
+
+@font-face {
+  font-family: 'Ysabeau SC', sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap');
+}
 
 @layer base {
+  html {
+    font-family: 'Ysabeau SC', system-ui, sans-serif;
+    @apply text-white;
+  }
   body {
     @apply mx-auto w-full text-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%;
     /* @apply bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%; */
   }
   button {
-    @apply cursor-pointer;
+    @apply rounded-md cursor-pointer;
   }
 }
 
@@ -22,6 +32,9 @@
   .image-link-form {
     @apply sm:w-4/5 md:w-1/2 bg-cover bg-no-repeat bg-center bg-[url('./components/ImageLinkForm/topography.svg')];
     background-color: #eccc48;
+  }
+  #tsparticles {
+    @apply fixed top-0 bottom-0 right-0 left-0 -z-10 opacity-85;
   }
 }
 
