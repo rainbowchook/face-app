@@ -20,7 +20,7 @@ const ImageLinkForm: React.FC<ImageLinkFormProps> = ({ onChange, onClick }): JSX
           />
           <button
             className="w-1/4 grow shrink-0 text-xl link px-4 py-2 inline-block text-white bg-violet-500"
-            type="submit"
+            type="button"
             onClick={onClick}
           >
             {'Detect'}

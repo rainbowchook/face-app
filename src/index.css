@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import url('https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Ysabeau+SC:wght@200&display=swap');
 
 @font-face {
   font-family: 'Ysabeau SC', sans-serif;
@@ -33,8 +33,9 @@
     @apply sm:w-4/5 md:w-1/2 bg-cover bg-no-repeat bg-center bg-[url('./components/ImageLinkForm/topography.svg')];
     background-color: #eccc48;
   }
+
   #tsparticles {
-    @apply fixed top-0 bottom-0 right-0 left-0 -z-10 opacity-85;
+    @apply fixed fill -z-10 opacity-85;
   }
 }
 
@@ -44,5 +45,8 @@
   }
   .center {
     @apply flex justify-center;
+  }
+  .fill {
+    @apply top-0 bottom-0 right-0 left-0;
   }
 }
