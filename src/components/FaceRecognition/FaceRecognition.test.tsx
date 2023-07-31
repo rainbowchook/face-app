@@ -61,7 +61,8 @@ describe('FaceRecognition', () => {
       expect(box).toBeInTheDocument()
       expect(box).toBeVisible()
       expect(box).toHaveClass('bounding-box')
-
+      expect(box).toBeEmptyDOMElement()
+      
       const { topRow, bottomRow, rightCol, leftCol } = mockBoxes[index]
       // console.log({ topRow, bottomRow, rightCol, leftCol })
       // let style = window.getComputedStyle(box)

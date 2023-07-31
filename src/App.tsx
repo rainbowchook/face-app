@@ -67,7 +67,7 @@ class App extends Component<{}, AppState> {
   onButtonClick = (): void => {
     // const { input, imageUrl } = this.state
     if (!this.state.input) {
-      return alert('Please enter a URL')
+      return alert('Please enter URL')
     }
     this.setState({ imageUrl: this.state.input })
     // console.log(this.state.imageUrl)
@@ -85,7 +85,12 @@ class App extends Component<{}, AppState> {
         // console.log('here 1' + typeof data)
         // console.log(data)
         if (typeof data === 'string') {
-          this.setState({ imageUrl: '', boxes: [] })
+          this.setState({ input: '', imageUrl: '', boxes: [] })
+          console.log({
+            input: this.state.input,
+            imageUrl: this.state.imageUrl,
+            boxes: this.state.boxes,
+          })
           return alert(data)
         }
         // else {
@@ -97,8 +102,8 @@ class App extends Component<{}, AppState> {
         // }
       })
       .catch((err) => {
-        // console.log('here' + err)
-        this.setState({ imageUrl: '', boxes: [] })
+        console.log('here' + err)
+        this.setState({ input: '', imageUrl: '', boxes: [] })
         alert(err)
       })
   }
@@ -111,6 +116,7 @@ class App extends Component<{}, AppState> {
         <Logo />
         <Rank />
         <ImageLinkForm
+          imageUrl={this.state.input}
           onChange={this.onInputChange}
           onClick={this.onButtonClick}
         />

@@ -4,14 +4,27 @@ import ImageLinkForm from '.'
 
 describe('ImageLinkForm', () => {
   test('ImageLinkForm components rendered', () => {
+    const imageUrl = 'fakeUrl'
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm onChange={onChange} onClick={onClick} />)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} />)
     expect(screen.getByText(/Upload picture to detect face/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Enter URL here/i)).toBeInTheDocument()
-    expect(screen.getByRole('button')).toBeInTheDocument()
-    
+    expect(screen.getByRole('button', { name: 'Detect' })).toBeInTheDocument()
+    expect(screen.getByText(/^Clicking will detect/i)).toBeInTheDocument()
+    expect(screen.getByText(/^Clicking will detect/i)).not.toBeVisible()
+  })
+
+  test('Input to be required', () => {
+    const imageUrl = 'fakeUrl'
+    const onChange = jest.fn()
+    const onClick = jest.fn()
+
+    render(<ImageLinkForm imageUrl={imageUrl}onChange={onChange} onClick={onClick} />)
+
+    const input = screen.getByPlaceholderText(/Enter URL here/i)
+    expect(input).toBeRequired()
   })
 
   test('ImageLinkForm change form input', () => {
@@ -20,7 +33,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm onChange={onChange} onClick={onClick}/>)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
 
     const textInput = screen.getByPlaceholderText(/Enter URL here/i)
     
@@ -31,6 +44,19 @@ describe('ImageLinkForm', () => {
     // userEvent.clear(textInput)
     // expect(textInput).toHaveValue('')
   })
+
+  test('Submit button', () => {
+    const imageUrl = 'http://fakeimgurl.com/fakeimg.png'
+
+    const onChange = jest.fn()
+    const onClick = jest.fn()
+
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
+    
+    const button = screen.getByRole('button', {name:'Detect'})
+    expect(button).toHaveAccessibleDescription(/^clicking will detect/i)
+    expect(button).not.toHaveAccessibleDescription('Other description')
+  })
   
   test('ImageLinkForm submit button click', () => {
     const imageUrl = 'http://fakeimgurl.com/fakeimg.png'
@@ -38,14 +64,14 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm onChange={onChange} onClick={onClick}/>)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
 
     const textInput = screen.getByPlaceholderText(/Enter URL here/i)
     
     userEvent.type(textInput, imageUrl)
     expect(textInput).toHaveValue(imageUrl)
 
-    const button = screen.getByRole('button')
+    const button = screen.getByRole('button', {name:'Detect'})
 
     userEvent.click(button, undefined, { clickCount: 1 })
     expect(onClick).toHaveBeenCalled()
