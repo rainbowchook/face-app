@@ -17,6 +17,7 @@ type BoundingBox = {
 export interface Box extends BoundingBox {}
 
 interface AppState {
+  input: string
   imageUrl: string
   boxes: Box[]
 }
@@ -30,6 +31,7 @@ const serverUrl: string =
 
 class App extends Component<{}, AppState> {
   state = {
+    input: '',
     imageUrl: '',
     boxes: [],
   }
@@ -59,38 +61,44 @@ class App extends Component<{}, AppState> {
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
     console.log(e.target.value)
-    this.setState({ imageUrl: e.target.value })
+    this.setState({ input: e.target.value })
   }
 
   onButtonClick = (): void => {
-    const { imageUrl } = this.state
-    console.log(this.state.imageUrl)
-    if (!this.state.imageUrl) {
+    // const { input, imageUrl } = this.state
+    if (!this.state.input) {
       return alert('Please enter a URL')
     }
+    this.setState({ imageUrl: this.state.input })
+    // console.log(this.state.imageUrl)
     fetch(`${serverUrl}/images`, {
       method: 'POST',
       headers: {
         Accept: 'application.json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ imageUrl }),
+      body: JSON.stringify({ imageUrl: this.state.input }),
       cache: 'default',
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log(typeof data)
+        // console.log('here 1' + typeof data)
         // console.log(data)
         if (typeof data === 'string') {
+          this.setState({ imageUrl: '', boxes: [] })
           return alert(data)
         }
+        // else {
+        // this.setState({ imageUrl: this.state.input })
         const boxes = this.calculateFaceLocations(data)
         if (boxes) {
           this.displayFaceLocations(boxes)
         }
+        // }
       })
       .catch((err) => {
-        // console.log(err)
+        // console.log('here' + err)
+        this.setState({ imageUrl: '', boxes: [] })
         alert(err)
       })
   }
@@ -106,7 +114,10 @@ class App extends Component<{}, AppState> {
           onChange={this.onInputChange}
           onClick={this.onButtonClick}
         />
-        <FaceRecognition imageUrl={this.state.imageUrl} boxes={this.state.boxes}/>
+        <FaceRecognition
+          imageUrl={this.state.imageUrl}
+          boxes={this.state.boxes}
+        />
       </div>
     )
   }

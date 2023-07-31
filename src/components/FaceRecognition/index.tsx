@@ -2,7 +2,7 @@ import React from 'react'
 import { Box } from '../../App'
 
 interface FaceRecognitionProps {
-  imageUrl: string
+  imageUrl: string,
   boxes: Box[]
 }
 
@@ -13,15 +13,17 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
   return (
     <div className="center mx-auto my-5">
       <div className="fill mt-2 relative">
-        <img
-          data-testid="inputImage"
-          id="inputImage"
-          alt="input for detection"
-          src={imageUrl}
-          width="500px"
-          height="auto"
-        />
-        {boxes.length && boxes.map((box: Box, index: number): JSX.Element => {
+        {imageUrl &&
+          <img
+            data-testid="inputImage"
+            id="inputImage"
+            alt="input for detection"
+            src={imageUrl}
+            width="500px"
+            height="auto"
+          />
+        }
+        {boxes.length > 0 && boxes.map((box: Box, index: number): JSX.Element => {
           const { topRow, bottomRow, rightCol, leftCol } = box
           return (
             <div

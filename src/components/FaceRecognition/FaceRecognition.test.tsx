@@ -26,11 +26,29 @@ const mockBoxes: Box[] = [
 ]
 
 describe('FaceRecognition', () => {
-  test('Image displays with no bounding boxes', async () => {
+  test('Image displays', async () => {
     render(<FaceRecognition imageUrl={url} boxes={[]} />)
 
     const image = await waitFor(() => screen.findByTestId('inputImage'))
-    expect(image).toBeTruthy()
+    expect(image).toBeInTheDocument()
+    expect(image).toHaveAttribute('src', url)
+  })
+
+  test('Image not found', () => {
+    const emptyUrl = ''
+    render(<FaceRecognition imageUrl={emptyUrl} boxes={[]} />)
+
+    const image = screen.queryByTestId('inputImage')
+    expect(image).not.toBeInTheDocument()
+  })
+  
+  test('Image displays with no bounding boxes', async () => {
+    render(<FaceRecognition imageUrl={url} boxes={[]} />)
+    // screen.debug()
+    // const boundingBoxes = await waitFor(() => screen.findAllByTestId('bounding-box'))
+    const boundingBox = screen.queryByTestId('bounding-box')
+    expect(boundingBox).not.toBeInTheDocument()
+    
   })
 
   test('Image displays with bounding boxes', async () => {
