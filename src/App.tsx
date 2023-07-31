@@ -35,19 +35,21 @@ class App extends Component<{}, AppState> {
   }
 
   calculateFaceLocations = (boundingBoxes: BoundingBox[]): Box[] | void => {
-    const image = document.getElementById('inputImage')
+    const image = document.getElementById('inputImage') as HTMLImageElement
     if (!image) return alert('Not a valid image')
-    const imageWidth = Number(image.clientWidth)
-    const imageHeight = Number(image.clientHeight)
+    const imageWidth = Number(image.width)
+    const imageHeight = Number(image.height)
     console.log([imageWidth, imageHeight])
     return boundingBoxes.map((boundingBox) => {
       const { bottomRow, leftCol, rightCol, topRow } = boundingBox
-      return {
+      const box = {
         leftCol: leftCol * imageWidth,
         topRow: topRow * imageHeight,
         rightCol: imageWidth - rightCol * imageWidth,
         bottomRow: imageHeight - bottomRow * imageHeight,
       }
+      console.log(box)
+      return box
     })
   }
 
@@ -77,8 +79,8 @@ class App extends Component<{}, AppState> {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(typeof data)
-        console.log(data)
+        // console.log(typeof data)
+        // console.log(data)
         if (typeof data === 'string') {
           return alert(data)
         }
@@ -88,7 +90,7 @@ class App extends Component<{}, AppState> {
         }
       })
       .catch((err) => {
-        console.log(err)
+        // console.log(err)
         alert(err)
       })
   }
