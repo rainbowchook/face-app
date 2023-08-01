@@ -13,13 +13,22 @@ type BoundingBox = {
   topRow: number
 }
 
+type Sentiment = {
+  name: string,
+  value: number,
+}
+
+type BoxSentiment = { box: BoundingBox, sentiments: Sentiment[] }
+
 // export type Box = BoundingBox
-export interface Box extends BoundingBox {}
+// export interface Box extends BoundingBox {}
+export interface Box extends BoxSentiment {}
 
 interface AppState {
   input: string
   imageUrl: string
-  boxes: Box[]
+  boxes: Box[],
+  loading: boolean
 }
 
 const serverUrl: string =
@@ -34,29 +43,32 @@ class App extends Component<{}, AppState> {
     input: '',
     imageUrl: '',
     boxes: [],
+    loading: false
   }
 
-  calculateFaceLocations = (boundingBoxes: BoundingBox[]): Box[] | void => {
+  calculateFaceLocations = (boundingBoxes: BoxSentiment[]): Box[] | void => {
     const image = document.getElementById('inputImage') as HTMLImageElement
     if (!image) return alert('Not a valid image')
     const imageWidth = Number(image.width)
     const imageHeight = Number(image.height)
     console.log([imageWidth, imageHeight])
-    return boundingBoxes.map((boundingBox) => {
-      const { bottomRow, leftCol, rightCol, topRow } = boundingBox
-      const box = {
+    return boundingBoxes.map((boundingBox: BoxSentiment) => {
+      console.log(boundingBox)
+      const { box, sentiments } = boundingBox
+      const { bottomRow, leftCol, rightCol, topRow } = box
+      const boxDimensions = {
         leftCol: leftCol * imageWidth,
         topRow: topRow * imageHeight,
         rightCol: imageWidth - rightCol * imageWidth,
         bottomRow: imageHeight - bottomRow * imageHeight,
       }
-      console.log(box)
-      return box
+      console.log(boxDimensions)
+      return { box: boxDimensions, sentiments }
     })
   }
 
   displayFaceLocations = (boxes: Box[]) => {
-    this.setState({ boxes })
+    this.setState({ boxes, loading:false })
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -69,7 +81,7 @@ class App extends Component<{}, AppState> {
     if (!this.state.input) {
       return alert('Please enter URL')
     }
-    this.setState({ imageUrl: this.state.input })
+    this.setState({ imageUrl: this.state.input, loading: true })
     // console.log(this.state.imageUrl)
     fetch(`${serverUrl}/images`, {
       method: 'POST',
@@ -85,7 +97,7 @@ class App extends Component<{}, AppState> {
         // console.log('here 1' + typeof data)
         // console.log(data)
         if (typeof data === 'string') {
-          this.setState({ input: '', imageUrl: '', boxes: [] })
+          this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
           console.log({
             input: this.state.input,
             imageUrl: this.state.imageUrl,
@@ -103,7 +115,7 @@ class App extends Component<{}, AppState> {
       })
       .catch((err) => {
         console.log('here' + err)
-        this.setState({ input: '', imageUrl: '', boxes: [] })
+        this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
         alert(err)
       })
   }
