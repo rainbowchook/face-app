@@ -1,6 +1,7 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import FaceRecognition from '.'
 import { Box } from '../../App'
+import { truncate } from '../utilities'
 
 const url = 'http://fakeurl.com'
 
@@ -33,7 +34,8 @@ const mockBoxes: Box[] =
           "rightCol": 0.7698749303817749,
           "topRow": 0.2599295973777771
       },
-      "sentiments": [
+      "sentiments": {
+        "sentiments": [
           {
               "name": "happiness",
               "value": 0.9999020099639893
@@ -62,7 +64,15 @@ const mockBoxes: Box[] =
               "name": "surprise",
               "value": 1.9033157627745823e-7
           }
-      ]
+        ],
+        "topSentimentWithDimensions": {
+          "name": "happiness",
+          "value": 0.9999020099639893,
+          "left": 123,
+          "bottom": 123
+        }
+      }
+      
   },
   {
       "box": {
@@ -71,7 +81,8 @@ const mockBoxes: Box[] =
           "rightCol": 0.5777044296264648,
           "topRow": 0.25500038266181946
       },
-      "sentiments": [
+      "sentiments": {
+        "sentiments": [
           {
               "name": "happiness",
               "value": 0.999999463558197
@@ -100,7 +111,15 @@ const mockBoxes: Box[] =
               "name": "neutral",
               "value": 2.9181337901640347e-10
           }
-      ]
+        ],
+        "topSentimentWithDimensions": {
+          "name": "happiness",
+          "value": 0.999999463558197,
+          "left": 123,
+          "bottom": 123
+        }
+      }
+      
   }
 ]
 
@@ -133,14 +152,18 @@ describe('FaceRecognition', () => {
   test('Image displays with bounding boxes', async () => {
     render(<FaceRecognition imageUrl={url} boxes={mockBoxes} />)
     // screen.debug()
-    // const boundingBoxes = await waitFor(() => screen.findAllByTestId('bounding-box'))
-    const boundingBoxes = screen.queryAllByTestId('bounding-box')
+    const boundingBoxes = await waitFor(() => screen.findAllByTestId('bounding-box'))
+    // const boundingBoxes = screen.queryAllByTestId('bounding-box')
     expect(boundingBoxes).toHaveLength(mockBoxes.length)
     boundingBoxes.forEach((box, index) => {
       expect(box).toBeInTheDocument()
       expect(box).toBeVisible()
       expect(box).toHaveClass('bounding-box')
-      expect(box).toBeEmptyDOMElement()
+      // expect(box).toBeEmptyDOMElement()
+
+      const { name, value } = mockBoxes[index].sentiments.sentiments[0]
+      const sentimentLabel = within(box).getByDisplayValue(`${name} | ${truncate(value, 4)}`)
+      expect(sentimentLabel).toBeInTheDocument()
 
       const { topRow, bottomRow, rightCol, leftCol } = mockBoxes[index].box
       // console.log({ topRow, bottomRow, rightCol, leftCol })

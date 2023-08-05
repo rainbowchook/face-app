@@ -50,14 +50,24 @@
     @apply top-0 bottom-0 right-0 left-0;
   }
   .bounding-box {
-    position: absolute;
-    box-shadow: 0 0 0 3px #149df2 inset;
-    display: flex;
+    /* position: absolute;
+    box-shadow: 0 0 0 3px #149df2 inset; */
+    /* box-shadow: 0 0 0 3px #243c5a inset; */
+    /* display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    cursor: pointer;
+    justify-content: center; */
+    /* cursor: pointer; */
+    @apply absolute cursor-pointer shadow-[0_0_0_3px_rgba(3,105,161,0.9)_inset];
   }
   .inactive-box {
-    @apply bg-white/60
+    @apply bg-white/50;
+  }
+  .box-label {
+    /* position: absolute;
+    top: 0;
+    right: 0; */
+    /* margin-left: 100vw; */
+    /* @apply text-sm font-bold bg-sky-700/90 rounded-lg max-w-full; */
+    @apply absolute font-bold bg-sky-700/90 rounded-lg transition;
   }
 }

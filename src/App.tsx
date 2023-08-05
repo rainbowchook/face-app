@@ -14,20 +14,30 @@ type BoundingBox = {
 }
 
 type Sentiment = {
-  name: string,
-  value: number,
+  name: string
+  value: number
 }
 
-type BoxSentiment = { box: BoundingBox, sentiments: Sentiment[] }
+type BoxSentiment = { box: BoundingBox; sentiments: Sentiment[] }
 
 // export type Box = BoundingBox
 // export interface Box extends BoundingBox {}
-export interface Box extends BoxSentiment {}
+// export interface Box extends BoxSentiment {}
+
+type SentimentWithDimensions = Sentiment & { left: number; bottom: number }
+
+export type Box = {
+  box: BoundingBox
+  sentiments: {
+    sentiments: Sentiment[]
+    topSentimentWithDimensions: SentimentWithDimensions
+  }
+}
 
 interface AppState {
   input: string
   imageUrl: string
-  boxes: Box[],
+  boxes: Box[]
   loading: boolean
 }
 
@@ -43,9 +53,9 @@ class App extends Component<{}, AppState> {
     input: '',
     imageUrl: '',
     boxes: [],
-    loading: false
+    loading: false,
   }
-
+  //need a calculateFaceLocations hook that returns boxes keeping imageWidth and imageHeight as states
   calculateFaceLocations = (boundingBoxes: BoxSentiment[]): Box[] | void => {
     const image = document.getElementById('inputImage') as HTMLImageElement
     if (!image) return alert('Not a valid image')
@@ -62,13 +72,22 @@ class App extends Component<{}, AppState> {
         rightCol: imageWidth - rightCol * imageWidth,
         bottomRow: imageHeight - bottomRow * imageHeight,
       }
+      const topSentimentWithDimensions = {
+        name: sentiments[0].name,
+        value: sentiments[0].value,
+        left: rightCol * imageWidth,
+        bottom: imageHeight - topRow * imageHeight,
+      }
       console.log(boxDimensions)
-      return { box: boxDimensions, sentiments }
+      return {
+        box: boxDimensions,
+        sentiments: { sentiments, topSentimentWithDimensions },
+      }
     })
   }
 
   displayFaceLocations = (boxes: Box[]) => {
-    this.setState({ boxes, loading:false })
+    this.setState({ boxes, loading: false })
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -98,11 +117,11 @@ class App extends Component<{}, AppState> {
         // console.log(data)
         if (typeof data === 'string') {
           this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
-          console.log({
-            input: this.state.input,
-            imageUrl: this.state.imageUrl,
-            boxes: this.state.boxes,
-          })
+          // console.log({
+          //   input: this.state.input,
+          //   imageUrl: this.state.imageUrl,
+          //   boxes: this.state.boxes,
+          // })
           return alert(data)
         }
         // else {
