@@ -2,6 +2,20 @@ import React, { useState } from 'react'
 import { Box } from '../../App'
 import { truncate } from '../utilities'
 
+type tcolors = {
+  [key: string]: string
+}
+
+const colors: tcolors = {
+  neutral: 'rgb(3 105 161)', // '#334155', //sky-700
+  happiness: 'rgb(37 99 235)', // '#0369a1', //blue-600
+  'sadness-contempt': 'rgb(109 40 217)', // '#6d28d9', //violet-700
+  fear: 'rgb(234 179 8)', // '#eab308', //yellow-500
+  surprise: 'rgb(249 115 22)', // '#c2410c', //orange-500
+  anger: 'rgb(190 18 60)', // '#eab308', //rose-700
+  disgust: 'rgb(4 120 87)', // '#047857', //emerald-700
+}
+
 interface FaceRecognitionProps {
   imageUrl: string
   boxes: Box[]
@@ -52,8 +66,9 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                     bottom: bottomRow,
                     right: rightCol,
                     left: leftCol,
+                    boxShadow: `0 0 0 3px ${colors[name]} inset`,
                   }}
-                  onMouseEnter={() => toggleActivate(index)}
+                  onMouseOver={() => toggleActivate(index)}
                   onMouseLeave={() => toggleActivate(index)}
                 >
                   {/* <div className="w-full h-full"></div> */}
@@ -66,10 +81,12 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                   >
                     {`${name} | ${truncate(value, 4)}`}
                   </div> */}
+                  {/* bg-[${colors[`${name}`]}] */}
                 </div>
-                <span
-                  key={`face-${index}`}
-                  className={`box-label 
+                {hovering && (
+                  <span
+                    key={`face-${index}-${value}`}
+                    className={`box-label
                   ${
                     hovering
                       ? index === activeFace
@@ -77,13 +94,15 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                         : 'inactive-box opacity-10'
                       : 'truncate text-sm z-10'
                   }`}
-                  style={{
-                    bottom,
-                    left,
-                  }}
-                >
-                  {`${name} | ${truncate(value, 4)}`}
-                </span>
+                    style={{
+                      bottom,
+                      left,
+                      backgroundColor: colors[name],
+                    }}
+                  >
+                    {`${name} | ${truncate(value, 2)}`}
+                  </span>
+                )}
                 {/* <span
                   className={`box-label 
                   ${
