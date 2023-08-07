@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Box } from '../../App'
 import { truncate } from '../utilities'
 
-type tcolors = {
+type Colors = {
   [key: string]: string
 }
 
-const colors: tcolors = {
+const colors: Colors = {
   neutral: 'rgb(3 105 161)', // '#334155', //sky-700
   happiness: 'rgb(37 99 235)', // '#0369a1', //blue-600
   'sadness-contempt': 'rgb(109 40 217)', // '#6d28d9', //violet-700
@@ -28,8 +28,8 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
   const [activeFace, setActiveFace] = useState(0)
   const [hovering, setHovering] = useState(false)
 
-  const toggleActivate = (index: number): void => {
-    const activated = !hovering
+  const toggleActivate = (index: number, activated: boolean): void => {
+    // const activated = !hovering
     setHovering(activated)
     activated ? setActiveFace(index) : setActiveFace(0)
   }
@@ -68,8 +68,8 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                     left: leftCol,
                     boxShadow: `0 0 0 3px ${colors[name]} inset`,
                   }}
-                  onMouseOver={() => toggleActivate(index)}
-                  onMouseLeave={() => toggleActivate(index)}
+                  onMouseEnter={() => toggleActivate(index, true)}
+                  onMouseLeave={() => toggleActivate(index, false)}
                 >
                   {/* <div className="w-full h-full"></div> */}
                   {/* <div
