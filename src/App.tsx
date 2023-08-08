@@ -5,6 +5,8 @@ import Logo from './components/Logo'
 import ImageLinkForm from './components/ImageLinkForm'
 import Rank from './components/Rank'
 import FaceRecognition from './components/FaceRecognition'
+import SignIn from './components/SignIn/SignIn'
+import Register from './components/Register/Register'
 
 type BoundingBox = {
   bottomRow: number
@@ -144,6 +146,8 @@ class App extends Component<{}, AppState> {
       <div>
         <ParticleBackground />
         <Navigation />
+        <SignIn />
+        <Register />
         <Logo />
         <Rank />
         <ImageLinkForm
