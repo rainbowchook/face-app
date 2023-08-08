@@ -19,10 +19,15 @@ class App extends Component<{}, {}> {
             <Route index path="/" element={<Root />} />
             <Route path="signin" element={<SignIn />} />
             <Route path="register" element={<Register />} />
-            <Route path="home" element={<Home />} />
-            {/* <Route path="home" element={<ProtectedRoute />}>
-              <Route path="/" element={<Home />} />
-            </Route> */}
+            {/* <Route path="home" element={<Home />} /> */}
+            <Route
+              path="home"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<p>Page does not exist</p>} />
           </Routes>
         </BrowserRouter>
