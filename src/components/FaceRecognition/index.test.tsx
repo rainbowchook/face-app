@@ -1,6 +1,6 @@
 import { render, screen, waitFor, within } from '@testing-library/react'
 import FaceRecognition from '.'
-import { Box } from '../../App'
+import { Box } from '../../routes/Home'
 import { truncate } from '../utilities'
 
 const url = 'http://fakeurl.com'

@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { SyntheticEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
-const SignIn: React.FC = () => {
+const Register: React.FC = () => {
+  const navigate = useNavigate()
+
+  const handleSubmit = (e: SyntheticEvent) => {
+    e.preventDefault()
+    console.log(e.target)
+    navigate('/home')
+  }
+
   return (
     <article className="rounded border border-solid border-black border-opacity-10 shadow-lg my-8 w-full sm:w-50 md:w-25 max-w-fit mx-auto">
       <main className="p-8">
-        <form className="max-w-md mx-auto">
+        <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
           <fieldset
             id="sign_up"
             className="border border-solid border-transparent px-0 mx-0"
           >
             <legend className="text-5xl font-semibold px-0 mx-0">
-              Sign In
+              Register
             </legend>
             <div className="mt-4">
               <label
@@ -45,16 +54,16 @@ const SignIn: React.FC = () => {
             <input
               className="font-bold px-4 py-2 appearance-none border border-solid bg-transparent grow cursor-pointer textsm block"
               type="submit"
-              value="Sign in"
+              value="Register"
             />
           </div>
           <div className="leading-normal mt-4">
-            <a href="#0" className="form-link">
-              Sign up
-            </a>
-            <a href="#0" className="form-link">
+            <Link className="form-link" to="/signin">
+              Sign In
+            </Link>
+            {/* <a href="#0" className="form-link">
               Forgot your password?
-            </a>
+            </a> */}
           </div>
         </form>
       </main>
@@ -62,4 +71,4 @@ const SignIn: React.FC = () => {
   )
 }
 
-export default SignIn
+export default Register

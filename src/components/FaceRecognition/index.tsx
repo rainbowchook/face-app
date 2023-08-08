@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box } from '../../App'
+import { Box } from '../../routes/Home'
 import { truncate } from '../utilities'
 
 type Colors = {
@@ -103,37 +103,6 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                     {`${name} | ${truncate(value, 2)}`}
                   </span>
                 )}
-                {/* <span
-                  className={`box-label 
-                  ${
-                    hovering && index === activeFace
-                      ? 'z-20 text-2xl'
-                      : 'truncate text-sm'
-                  } 
-                  ${
-                    hovering && index !== activeFace
-                      ? 'inactive-box opacity-10'
-                      : 'z-10'
-                  }
-                  `}
-                  style={{
-                    bottom,
-                    left,
-                  }}
-                >
-                  {`${name} | ${truncate(value, 4)}`}
-                </span> */}
-                {/* <span
-                  className={`box-label 
-                  ${hovering && index === activeFace ? 'z-20 text-6xl' : 'truncate'} 
-                  ${hovering && index !== activeFace ? 'inactive-box' : 'z-10'}`}
-                  style={{
-                    bottom,
-                    left,
-                  }}
-                >
-                  {`${name} | ${truncate(value, 4)}`}
-                </span> */}
               </>
             )
           })}

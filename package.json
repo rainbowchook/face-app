@@ -14,6 +14,7 @@
     "react-dom": "^18.2.0",
     "react-parallax-tilt": "^1.7.154",
     "react-particles": "^2.11.0",
+    "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
     "tsparticles-slim": "^2.11.1",
     "typescript": "^4.9.5",
