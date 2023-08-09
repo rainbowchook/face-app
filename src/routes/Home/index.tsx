@@ -41,7 +41,7 @@ interface AppState {
   loading: boolean
 }
 
-const serverUrl: string =
+export const serverUrl: string =
   process.env.NODE_ENV !== 'production'
     ? 'http://localhost:4000'
     : process.env.REACT_APP_SERVER_URL
@@ -105,7 +105,7 @@ class Home extends Component<{}, AppState> {
     fetch(`${serverUrl}/images`, {
       method: 'POST',
       headers: {
-        Accept: 'application.json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ imageUrl: this.state.input }),

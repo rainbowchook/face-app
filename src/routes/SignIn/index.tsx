@@ -1,12 +1,39 @@
-import React, { SyntheticEvent } from 'react'
+import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { serverUrl } from '../Home'
 
 const SignIn: React.FC = () => {
+  const [form, setForm] = useState({
+    email: '',
+    password: '',
+  })
   const navigate = useNavigate()
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    navigate('/home')
+    fetch(`${serverUrl}/users/signin`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+      cache: 'default',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data)
+        navigate('/home')
+      })
+      .catch((error) => {
+        alert(error)
+        // navigate('/signin')
+      })
   }
 
   return (
@@ -30,8 +57,10 @@ const SignIn: React.FC = () => {
               <input
                 className="p-2 appearance-none border border-solid bg-transparent hover:bg-black hover:white w-full"
                 type="email"
-                name="email-address"
-                id="email-address"
+                name="email"
+                id="email"
+                value={form.email}
+                onChange={onChange}
               />
             </div>
             <div className="mt-4">
@@ -46,6 +75,8 @@ const SignIn: React.FC = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={form.password}
+                onChange={onChange}
               />
             </div>
           </fieldset>
