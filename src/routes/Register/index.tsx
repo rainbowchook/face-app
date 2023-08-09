@@ -1,13 +1,47 @@
-import React, { SyntheticEvent } from 'react'
+import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { SignInForm } from '../SignIn'
+import { serverUrl } from '../Home'
+
+type RegisterForm = SignInForm & {
+  name: string
+}
 
 const Register: React.FC = () => {
+  const [form, setForm] = useState<RegisterForm>({
+    name: '',
+    email: '',
+    password: '',
+  })
   const navigate = useNavigate()
 
-  const handleSubmit = (e: SyntheticEvent) => {
+  const { name, email, password } = form
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = e.target
+    setForm({ ...form, [name]: value })
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    console.log(e.target)
-    navigate('/home')
+    fetch(`${serverUrl}/users`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form),
+      cache: 'default',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data) //update context
+        navigate('/home')
+      })
+      .catch((error) => {
+        alert(error)
+        // navigate('/register')
+      })
   }
 
   return (
@@ -24,15 +58,33 @@ const Register: React.FC = () => {
             <div className="mt-4">
               <label
                 className="block font-semibold leading-normal text-sm"
-                htmlFor="email-address"
+                htmlFor="name"
+              >
+                Name
+              </label>
+              <input
+                className="p-2 appearance-none border border-solid bg-transparent hover:bg-black hover:white w-full"
+                type="text"
+                name="name"
+                id="name"
+                value={name}
+                onChange={onChange}
+              />
+            </div>
+            <div className="mt-4">
+              <label
+                className="block font-semibold leading-normal text-sm"
+                htmlFor="email"
               >
                 Email
               </label>
               <input
                 className="p-2 appearance-none border border-solid bg-transparent hover:bg-black hover:white w-full"
                 type="email"
-                name="email-address"
-                id="email-address"
+                name="email"
+                id="email"
+                value={email}
+                onChange={onChange}
               />
             </div>
             <div className="mt-4">
@@ -47,6 +99,8 @@ const Register: React.FC = () => {
                 type="password"
                 name="password"
                 id="password"
+                value={password}
+                onChange={onChange}
               />
             </div>
           </fieldset>

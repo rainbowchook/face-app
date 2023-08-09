@@ -2,19 +2,26 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { serverUrl } from '../Home'
 
+export type SignInForm = {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignInForm>({
     email: '',
     password: '',
   })
   const navigate = useNavigate()
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const { email, password } = form
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target
     setForm({ ...form, [name]: value })
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     fetch(`${serverUrl}/users/signin`, {
       method: 'POST',
@@ -50,7 +57,7 @@ const SignIn: React.FC = () => {
             <div className="mt-4">
               <label
                 className="block font-semibold leading-normal text-sm"
-                htmlFor="email-address"
+                htmlFor="email"
               >
                 Email
               </label>
@@ -59,7 +66,7 @@ const SignIn: React.FC = () => {
                 type="email"
                 name="email"
                 id="email"
-                value={form.email}
+                value={email}
                 onChange={onChange}
               />
             </div>
@@ -75,7 +82,7 @@ const SignIn: React.FC = () => {
                 type="password"
                 name="password"
                 id="password"
-                value={form.password}
+                value={password}
                 onChange={onChange}
               />
             </div>
