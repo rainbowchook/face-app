@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 
 const Navigation: React.FC = () => {
-  const [currentUser] = useState(null)
+  const [currentUser, ] = useState(null)
   return (
     <nav className="flex justify-end">
       {/* <p className="text-2xl no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer"> */}
