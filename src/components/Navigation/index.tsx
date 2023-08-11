@@ -1,8 +1,11 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Navigation: React.FC = () => {
-  const [currentUser, ] = useState(null)
+  // const [currentUser, ] = useState(null)
+  const { currentUser, signOut } = useAuthContext()
+
   return (
     <nav className="flex justify-end">
       {/* <p className="text-2xl no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer"> */}
@@ -17,6 +20,7 @@ const Navigation: React.FC = () => {
               : 'text-2xl link'
           }
           role="link"
+          onClick={() => signOut()}
         >
           Sign Out
         </NavLink>

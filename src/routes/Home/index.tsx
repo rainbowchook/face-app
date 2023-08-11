@@ -1,10 +1,11 @@
-import { ChangeEvent, Component } from 'react'
+import { ChangeEvent, Component, Context } from 'react'
 // import ParticleBackground from '../../components/ParticleBackground'
 // import Navigation from '../../components/Navigation'
 import Logo from '../../components/Logo'
 import ImageLinkForm from '../../components/ImageLinkForm'
 import Rank from '../../components/Rank'
 import FaceRecognition from '../../components/FaceRecognition'
+import { AuthContext } from '../../contexts/AuthContext'
 
 type BoundingBox = {
   bottomRow: number
@@ -55,9 +56,25 @@ class Home extends Component<{}, AppState> {
     boxes: [],
     loading: false,
   }
+  static contextType = AuthContext
+  declare context: React.ContextType<typeof AuthContext>
+
+  componentDidUpdate(
+    prevProps: Readonly<{}>,
+    prevState: Readonly<AppState>,
+    snapshot?: any
+  ): void {
+    if (prevState.boxes !== this.state.boxes) {
+      const authCtx = this.context
+      if (authCtx && authCtx.currentUser !== null) {
+        authCtx.addEntriesCount()
+      }
+    }
+  }
+
   //need a calculateFaceLocations hook that returns boxes keeping imageWidth and imageHeight as states
   calculateFaceLocations = (boundingBoxes: BoxSentiment[]): Box[] | void => {
-    const image = document.getElementById('inputImage') as HTMLImageElement
+    const image = document.getElementById('Image') as HTMLImageElement
     if (!image) return alert('Not a valid image')
     const imageWidth = Number(image.width)
     const imageHeight = Number(image.height)

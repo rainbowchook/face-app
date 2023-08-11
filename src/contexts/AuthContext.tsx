@@ -2,16 +2,16 @@ import {
   createContext,
   useState,
   useEffect,
-  useCallback,
+  // useCallback,
   ReactNode,
-  Dispatch,
-  SetStateAction,
+  // Dispatch,
+  // SetStateAction,
 } from 'react'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 
-type SetValue<T> = Dispatch<SetStateAction<T>>
+// type SetValue<T> = Dispatch<SetStateAction<T>>
 
-type User = {
+export type User = {
   id: number
   name: string
   email: string
@@ -20,17 +20,23 @@ type User = {
 }
 
 //define type for context value
-type AuthContextType = {
+export type AuthContextType = {
   currentUser: User | null
-  // setCurrentUser?: (currentUser: User) => void
-  setUser: SetValue<User>
+  // setCurrentUser?: (currentUser: User) => void;
+  // setUser: SetValue<User>;
+  signIn: (user: User) => void
+  signOut: () => void
+  addEntriesCount: () => void
 }
 
 //create context
 export const AuthContext = createContext<AuthContextType | undefined>({
   currentUser: null,
   // setCurrentUser: () => null,
-  setUser: () => null
+  // setUser: () => null
+  signIn: () => null,
+  signOut: () => null,
+  addEntriesCount: () => null,
 })
 
 //Provider component
@@ -45,29 +51,46 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     currentUser
   )
 
-  const setUser: SetValue<User> = useCallback((user) => {
-    const newUser =
-      currentUser === null
-        ? null
-        : user instanceof Function
-        ? user(currentUser)
-        : currentUser
-    setCurrentUser(newUser)
-    setSessionUser(newUser)
-  }, [currentUser, setCurrentUser, setSessionUser])
+  // const setUser: SetValue<User> = useCallback((user) => {
+  //   const newUser =
+  //     currentUser === null
+  //       ? null
+  //       : user instanceof Function
+  //       ? user(currentUser)
+  //       : currentUser
+  //   setCurrentUser(newUser)
+  //   setSessionUser(newUser)
+  // }, [currentUser, setCurrentUser, setSessionUser])
 
   useEffect(() => {
-    setSessionUser(currentUser)
-    return () => {
-      setCurrentUser(null)
-      setSessionUser(null)
+    if (sessionUser !== currentUser) {
+      setSessionUser(currentUser)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => setSessionUser(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser])
+
+  const signIn = (user: User): void => {
+    // setUser(user)
+    setCurrentUser(user)
+  }
+
+  const signOut = (): void => {
+    setCurrentUser(null)
+    // setSessionUser(null)
+  }
+
+  const addEntriesCount = (): void => {
+    currentUser
+      ? setCurrentUser({ ...currentUser, entries: currentUser.entries + 1 })
+      : console.error(`Cannot add count to current user: ${currentUser}`)
+  }
 
   const authContextValue: AuthContextType = {
     currentUser,
-    setUser,
+    signIn,
+    signOut,
+    addEntriesCount,
   }
 
   return (

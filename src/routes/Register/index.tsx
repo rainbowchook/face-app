@@ -2,6 +2,8 @@ import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SignInForm } from '../SignIn'
 import { serverUrl } from '../Home'
+import { User } from '../../contexts/AuthContext'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 type RegisterForm = SignInForm & {
   name: string
@@ -13,6 +15,7 @@ const Register: React.FC = () => {
     email: '',
     password: '',
   })
+  const { signIn } = useAuthContext()
   const navigate = useNavigate()
 
   const { name, email, password } = form
@@ -34,8 +37,12 @@ const Register: React.FC = () => {
       cache: 'default',
     })
       .then((res) => res.json())
-      .then((data) => {
-        console.log(data) //update context
+      .then((user: User) => {
+        console.log(user) //update context
+        if(!user.id) {
+          throw new Error('Unable to sign user in')
+        }
+        signIn(user)
         navigate('/home')
       })
       .catch((error) => {
