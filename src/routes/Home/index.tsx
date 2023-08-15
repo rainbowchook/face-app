@@ -5,7 +5,6 @@ import Logo from '../../components/Logo'
 import ImageLinkForm from '../../components/ImageLinkForm'
 import Rank from '../../components/Rank'
 import FaceRecognition from '../../components/FaceRecognition'
-import Spinner from '../../components/Spinner'
 import { AuthContext, User } from '../../contexts/AuthContext'
 
 type BoundingBox = {
@@ -62,28 +61,25 @@ class Home extends Component<{}, AppState> {
   declare context: React.ContextType<typeof AuthContext>
   // context!: React.ContextType<typeof AuthContext>
 
-  updateUserEntries = (currentUser: User): number => {
+  updateUserEntries = async (currentUser: User): Promise<any> => {
     const { id } = currentUser
-    let returnValue: number = 0
-    fetch(`${serverUrl}/users/${currentUser.id}/image`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id }),
-      cache: 'default',
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log('image data', data)
-        returnValue = data
+    try {
+      const res = await fetch(`${serverUrl}/users/${currentUser.id}/image`, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id }),
+        cache: 'default',
       })
-      .catch((err) => {
-        console.error('image error', err)
-        alert(err)
-      })
-    return returnValue
+      const data = await res.json()
+      console.log('image data', data)
+      return data
+    } catch (err) {
+      console.error('image error', err)
+      alert(err)
+    }
   }
 
   componentDidUpdate(
@@ -96,10 +92,9 @@ class Home extends Component<{}, AppState> {
       if (authCtx && authCtx.currentUser !== null) {
         const { currentUser, addEntriesCount } = authCtx
         // addEntriesCount()
-        const entries = this.updateUserEntries(currentUser)
-        if (entries !== 0) {
+        this.updateUserEntries(currentUser).then((entries) =>
           addEntriesCount(entries)
-        }
+        )
       }
     }
   }
@@ -202,11 +197,11 @@ class Home extends Component<{}, AppState> {
           imageUrl={this.state.input}
           onChange={this.onInputChange}
           onClick={this.onButtonClick}
+          loading={this.state.loading}
         />
         <FaceRecognition
           imageUrl={this.state.imageUrl}
           boxes={this.state.boxes}
-          loading={this.state.loading}
         />
       </div>
     )
