@@ -1,8 +1,8 @@
 import { useContext } from "react"
-import { AuthContext } from "../contexts/AuthContext"
+import { AuthContext, AuthContextType } from "../contexts/AuthContext"
 
 //custom hook to access AuthContext
-export const useAuthContext = () => {
+export const useAuthContext = (): AuthContextType => {
   const context = useContext(AuthContext)
   if (!context) {
     throw new Error('useAuthContext must be used within the AuthContext')

@@ -1,11 +1,12 @@
-import { ChangeEvent, Component, Context } from 'react'
+import { ChangeEvent, Component, createRef } from 'react'
 // import ParticleBackground from '../../components/ParticleBackground'
 // import Navigation from '../../components/Navigation'
 import Logo from '../../components/Logo'
 import ImageLinkForm from '../../components/ImageLinkForm'
 import Rank from '../../components/Rank'
 import FaceRecognition from '../../components/FaceRecognition'
-import { AuthContext } from '../../contexts/AuthContext'
+import Spinner from '../../components/Spinner'
+import { AuthContext, User } from '../../contexts/AuthContext'
 
 type BoundingBox = {
   bottomRow: number
@@ -56,8 +57,34 @@ class Home extends Component<{}, AppState> {
     boxes: [],
     loading: false,
   }
+
   static contextType = AuthContext
   declare context: React.ContextType<typeof AuthContext>
+  // context!: React.ContextType<typeof AuthContext>
+
+  updateUserEntries = (currentUser: User): number => {
+    const { id } = currentUser
+    let returnValue: number = 0
+    fetch(`${serverUrl}/users/${currentUser.id}/image`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id }),
+      cache: 'default',
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('image data', data)
+        returnValue = data
+      })
+      .catch((err) => {
+        console.error('image error', err)
+        alert(err)
+      })
+    return returnValue
+  }
 
   componentDidUpdate(
     prevProps: Readonly<{}>,
@@ -67,14 +94,19 @@ class Home extends Component<{}, AppState> {
     if (prevState.boxes !== this.state.boxes) {
       const authCtx = this.context
       if (authCtx && authCtx.currentUser !== null) {
-        authCtx.addEntriesCount()
+        const { currentUser, addEntriesCount } = authCtx
+        // addEntriesCount()
+        const entries = this.updateUserEntries(currentUser)
+        if (entries !== 0) {
+          addEntriesCount(entries)
+        }
       }
     }
   }
 
   //need a calculateFaceLocations hook that returns boxes keeping imageWidth and imageHeight as states
   calculateFaceLocations = (boundingBoxes: BoxSentiment[]): Box[] | void => {
-    const image = document.getElementById('Image') as HTMLImageElement
+    const image = document.getElementById('inputImage') as HTMLImageElement
     if (!image) return alert('Not a valid image')
     const imageWidth = Number(image.width)
     const imageHeight = Number(image.height)
@@ -130,8 +162,8 @@ class Home extends Component<{}, AppState> {
     })
       .then((res) => res.json())
       .then((data) => {
-        // console.log('here 1' + typeof data)
-        // console.log(data)
+        console.log('here 1' + typeof data)
+        console.log(data)
         if (typeof data === 'string') {
           this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
           // console.log({
@@ -154,6 +186,9 @@ class Home extends Component<{}, AppState> {
         this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
         alert(err)
       })
+    // .finally(() => {
+    //   this.setState({ loading: false })
+    // })
   }
 
   render() {
@@ -171,6 +206,7 @@ class Home extends Component<{}, AppState> {
         <FaceRecognition
           imageUrl={this.state.imageUrl}
           boxes={this.state.boxes}
+          loading={this.state.loading}
         />
       </div>
     )

@@ -26,7 +26,7 @@ export type AuthContextType = {
   // setUser: SetValue<User>;
   signIn: (user: User) => void
   signOut: () => void
-  addEntriesCount: () => void
+  addEntriesCount: (entries: number) => void
 }
 
 //create context
@@ -80,9 +80,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // setSessionUser(null)
   }
 
-  const addEntriesCount = (): void => {
+  const addEntriesCount = (entries: number): void => {
     currentUser
-      ? setCurrentUser({ ...currentUser, entries: currentUser.entries + 1 })
+      // ? setCurrentUser({ ...currentUser, entries: Number(currentUser.entries) + 1 })
+      ? setCurrentUser({ ...currentUser, entries: Number(entries) })
       : console.error(`Cannot add count to current user: ${currentUser}`)
   }
 

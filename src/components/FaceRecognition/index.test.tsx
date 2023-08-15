@@ -125,7 +125,7 @@ const mockBoxes: Box[] =
 
 describe('FaceRecognition', () => {
   test('Image displays', async () => {
-    render(<FaceRecognition imageUrl={url} boxes={[]} />)
+    render(<FaceRecognition imageUrl={url} boxes={[]} loading={false}/>)
 
     const image = await waitFor(() => screen.findByTestId('inputImage'))
     expect(image).toBeInTheDocument()
@@ -134,14 +134,14 @@ describe('FaceRecognition', () => {
 
   test('Image not found', () => {
     const emptyUrl = ''
-    render(<FaceRecognition imageUrl={emptyUrl} boxes={[]} />)
+    render(<FaceRecognition imageUrl={emptyUrl} boxes={[]} loading={false}/>)
 
     const image = screen.queryByTestId('inputImage')
     expect(image).not.toBeInTheDocument()
   })
   
   test('Image displays with no bounding boxes', async () => {
-    render(<FaceRecognition imageUrl={url} boxes={[]} />)
+    render(<FaceRecognition imageUrl={url} boxes={[]} loading={false}/>)
     // screen.debug()
     // const boundingBoxes = await waitFor(() => screen.findAllByTestId('bounding-box'))
     const boundingBox = screen.queryByTestId('bounding-box')
@@ -150,7 +150,7 @@ describe('FaceRecognition', () => {
   })
 
   test('Image displays with bounding boxes', async () => {
-    render(<FaceRecognition imageUrl={url} boxes={mockBoxes} />)
+    render(<FaceRecognition imageUrl={url} boxes={mockBoxes} loading={false}/>)
     // screen.debug()
     const boundingBoxes = await waitFor(() => screen.findAllByTestId('bounding-box'))
     // const boundingBoxes = screen.queryAllByTestId('bounding-box')

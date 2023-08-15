@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Box } from '../../routes/Home'
 import { truncate } from '../utilities'
+import Spinner from '../Spinner'
 
 type Colors = {
   [key: string]: string
@@ -19,11 +20,13 @@ const colors: Colors = {
 interface FaceRecognitionProps {
   imageUrl: string
   boxes: Box[]
+  loading: boolean
 }
 
 const FaceRecognition: React.FC<FaceRecognitionProps> = ({
   imageUrl,
   boxes,
+  loading,
 }) => {
   const [activeFace, setActiveFace] = useState(0)
   const [hovering, setHovering] = useState(false)
@@ -47,6 +50,7 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
             height="auto"
           />
         )}
+        {loading && <Spinner />}
         {boxes.length > 0 &&
           boxes.map((boundingBox: Box, index: number): JSX.Element => {
             const { topRow, bottomRow, rightCol, leftCol } = boundingBox.box
