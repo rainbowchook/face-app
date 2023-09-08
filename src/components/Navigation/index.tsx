@@ -1,14 +1,37 @@
-import React from 'react'
+import { NavLink } from 'react-router-dom'
+import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Navigation: React.FC = () => {
+  const { currentUser, signOut } = useAuthContext()
+
   return (
     <nav className="flex justify-end">
-      {/* <p className="text-2xl no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer"> */}
-      <p className="text-2xl link">
-        <span role="link" >
-          {'Sign Out'}
-        </span>
-      </p>
+      {currentUser ? (
+        <NavLink
+          to="/"
+          className={({ isActive, isPending }) =>
+            isPending
+              ? 'text-2xl link text-violet-300'
+              : isActive
+              ? 'text-2xl link'
+              : 'text-2xl link'
+          }
+          role="link"
+          onClick={() => signOut()}
+        >
+          Sign Out
+        </NavLink>
+      ) : (
+        <>
+          <NavLink to="/" className="text-2xl link" role="link">Home</NavLink>
+          <NavLink to="/signin" className="text-2xl link" role="link">
+            Sign In
+          </NavLink>
+          <NavLink to="/register" className="text-2xl link" role="link">
+            Register
+          </NavLink>
+        </>
+      )}
     </nav>
   )
 }

@@ -16,7 +16,6 @@
   }
   body {
     @apply mx-auto w-full text-center bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%;
-    /* @apply bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%; */
   }
   button {
     @apply rounded-md cursor-pointer;
@@ -26,35 +25,53 @@
 @layer components {
   .logo {
     @apply bg-clip-padding bg-cover bg-no-repeat bg-center bg-[url('./components/Logo/brain.png')];
-    /* @apply bg-cover bg-no-repeat bg-center; */
-    /* background-image: theme('backgroundImage.logo-image'); */
   }
   .image-link-form {
     @apply sm:w-4/5 md:w-1/2 bg-cover bg-no-repeat bg-center bg-[url('./components/ImageLinkForm/topography.svg')];
     background-color: #eccc48;
   }
-
+  .link {
+    @apply no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer;
+  }
+  .form-link {
+    @apply no-underline ease-in transition opacity-100 hover:opacity-50 cursor-pointer block text-sm;
+  }
+  .bounding-box {
+    /* position: absolute;
+    box-shadow: 0 0 0 3px #149df2 inset; */
+    /* box-shadow: 0 0 0 3px #243c5a inset; */
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center; */
+    /* cursor: pointer; */
+    /* @apply absolute cursor-pointer shadow-[0_0_0_3px_rgba(3,105,161,0.9)_inset]; */
+    @apply absolute cursor-pointer;
+  }
+  .inactive-box {
+    @apply bg-white/50;
+  }
+  .box-label {
+    /* position: absolute;
+    top: 0;
+    right: 0; */
+    /* margin-left: 100vw; */
+    /* @apply text-sm font-bold bg-sky-700/90 rounded-lg max-w-full; */
+    /* @apply absolute font-bold bg-sky-700/90 rounded-lg transition; */
+    @apply absolute font-bold rounded-lg transition;
+  }
   #tsparticles {
     @apply fixed fill -z-10 opacity-85;
   }
 }
 
 @layer utilities {
-  .link {
-    @apply no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer;
+  .grow {
+    @apply scale-100 hover:scale-105 active:scale-90 transition-transform ease-out;
   }
   .center {
     @apply flex justify-center;
   }
   .fill {
     @apply top-0 bottom-0 right-0 left-0;
-  }
-  .bounding-box {
-    position: absolute;
-    box-shadow: 0 0 0 3px #149df2 inset;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    cursor: pointer;
   }
 }

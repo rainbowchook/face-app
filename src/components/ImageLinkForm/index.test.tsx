@@ -8,7 +8,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} />)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} loading={false}/>)
     expect(screen.getByText(/Upload picture to detect face/i)).toBeInTheDocument()
     expect(screen.getByPlaceholderText(/Enter URL here/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Detect' })).toBeInTheDocument()
@@ -21,7 +21,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm imageUrl={imageUrl}onChange={onChange} onClick={onClick} />)
+    render(<ImageLinkForm imageUrl={imageUrl}onChange={onChange} onClick={onClick} loading={false}/>)
 
     const input = screen.getByPlaceholderText(/Enter URL here/i)
     expect(input).toBeRequired()
@@ -33,7 +33,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} loading={false}/>)
 
     const textInput = screen.getByPlaceholderText(/Enter URL here/i)
     
@@ -51,7 +51,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} loading={false}/>)
     
     const button = screen.getByRole('button', {name:'Detect'})
     expect(button).toHaveAccessibleDescription(/^clicking will detect/i)
@@ -64,7 +64,7 @@ describe('ImageLinkForm', () => {
     const onChange = jest.fn()
     const onClick = jest.fn()
 
-    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick}/>)
+    render(<ImageLinkForm imageUrl={imageUrl} onChange={onChange} onClick={onClick} loading={false}/>)
 
     const textInput = screen.getByPlaceholderText(/Enter URL here/i)
     
