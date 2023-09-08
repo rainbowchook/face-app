@@ -1,14 +1,11 @@
-// import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useAuthContext } from '../../hooks/useAuthContext'
 
 const Navigation: React.FC = () => {
-  // const [currentUser, ] = useState(null)
   const { currentUser, signOut } = useAuthContext()
 
   return (
     <nav className="flex justify-end">
-      {/* <p className="text-2xl no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer"> */}
       {currentUser ? (
         <NavLink
           to="/"
@@ -26,6 +23,7 @@ const Navigation: React.FC = () => {
         </NavLink>
       ) : (
         <>
+          <NavLink to="/" className="text-2xl link" role="link">Home</NavLink>
           <NavLink to="/signin" className="text-2xl link" role="link">
             Sign In
           </NavLink>
@@ -35,14 +33,6 @@ const Navigation: React.FC = () => {
         </>
       )}
     </nav>
-    // <nav className="flex justify-end">
-    //   {/* <p className="text-2xl no-underline ease-in transition opacity-100 hover:opacity-50 hover:underline p-3 cursor-pointer"> */}
-    //   <p className="text-2xl link">
-    //     <span role="link" >
-    //       {'Sign Out'}
-    //     </span>
-    //   </p>
-    // </nav>
   )
 }
 

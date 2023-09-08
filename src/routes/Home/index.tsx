@@ -1,6 +1,4 @@
-import { ChangeEvent, Component, createRef } from 'react'
-// import ParticleBackground from '../../components/ParticleBackground'
-// import Navigation from '../../components/Navigation'
+import { ChangeEvent, Component } from 'react'
 import Logo from '../../components/Logo'
 import ImageLinkForm from '../../components/ImageLinkForm'
 import Rank from '../../components/Rank'
@@ -21,10 +19,6 @@ type Sentiment = {
 
 type BoxSentiment = { box: BoundingBox; sentiments: Sentiment[] }
 
-// export type Box = BoundingBox
-// export interface Box extends BoundingBox {}
-// export interface Box extends BoxSentiment {}
-
 type SentimentWithDimensions = Sentiment & { left: number; bottom: number }
 
 export type Box = {
@@ -42,12 +36,12 @@ interface AppState {
   loading: boolean
 }
 
-export const serverUrl: string =
-  process.env.NODE_ENV !== 'production'
-    ? 'http://localhost:4000'
-    : process.env.REACT_APP_SERVER_URL
-    ? process.env.REACT_APP_SERVER_URL
-    : 'http://localhost:4000'
+export const serverUrl: string = process.env.REACT_APP_SERVER_URL!
+  // process.env.NODE_ENV !== 'production'
+  //   ? 'http://localhost:4000'
+  //   : process.env.REACT_APP_SERVER_URL
+  //   ? process.env.REACT_APP_SERVER_URL
+  //   : 'http://localhost:4000'
 
 class Home extends Component<{}, AppState> {
   state = {
@@ -58,8 +52,12 @@ class Home extends Component<{}, AppState> {
   }
 
   static contextType = AuthContext
-  declare context: React.ContextType<typeof AuthContext>
-  // context!: React.ContextType<typeof AuthContext>
+  declare context: React.ContextType<typeof AuthContext> 
+  /* react-app-rewired installed to use above declare context line instead of:
+    context!: React.ContextType<typeof AuthContext>
+    so that "@babel/plugin-transform-typescript" babel plugin can run before other plugins.
+    https://dev.to/ansonh/simplest-way-to-install-babel-plugins-in-create-react-app-7i5
+  */
 
   updateUserEntries = async (currentUser: User): Promise<any> => {
     const { id } = currentUser
@@ -74,7 +72,6 @@ class Home extends Component<{}, AppState> {
         cache: 'default',
       })
       const data = await res.json()
-      console.log('image data', data)
       return data
     } catch (err) {
       console.error('image error', err)
@@ -87,19 +84,20 @@ class Home extends Component<{}, AppState> {
     prevState: Readonly<AppState>,
     snapshot?: any
   ): void {
-    if (prevState.boxes !== this.state.boxes) {
+    if ((prevState.boxes !== this.state.boxes) && this.state.boxes.length > 0) {
       const authCtx = this.context
       if (authCtx && authCtx.currentUser !== null) {
         const { currentUser, addEntriesCount } = authCtx
-        // addEntriesCount()
-        this.updateUserEntries(currentUser).then((entries) =>
+        this.updateUserEntries(currentUser).then((entries) => {
+        
           addEntriesCount(entries)
-        )
+          console.log(entries)
+      })
       }
     }
   }
 
-  //need a calculateFaceLocations hook that returns boxes keeping imageWidth and imageHeight as states
+  //need a calculateFaceLocations hook with useCallback (with dependencies imageWidth and imageHeight) that returns boxes, keeping imageWidth and imageHeight as states
   calculateFaceLocations = (boundingBoxes: BoxSentiment[]): Box[] | void => {
     const image = document.getElementById('inputImage') as HTMLImageElement
     if (!image) return alert('Not a valid image')
@@ -130,22 +128,19 @@ class Home extends Component<{}, AppState> {
     })
   }
 
-  displayFaceLocations = (boxes: Box[]) => {
+  displayFaceLocations = (boxes: Box[]): void => {
     this.setState({ boxes, loading: false })
   }
 
   onInputChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    console.log(e.target.value)
     this.setState({ input: e.target.value })
   }
 
   onButtonClick = (): void => {
-    // const { input, imageUrl } = this.state
     if (!this.state.input) {
       return alert('Please enter URL')
     }
     this.setState({ imageUrl: this.state.input, loading: true })
-    // console.log(this.state.imageUrl)
     fetch(`${serverUrl}/images`, {
       method: 'POST',
       headers: {
@@ -157,40 +152,25 @@ class Home extends Component<{}, AppState> {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log('here 1' + typeof data)
-        console.log(data)
         if (typeof data === 'string') {
           this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
-          // console.log({
-          //   input: this.state.input,
-          //   imageUrl: this.state.imageUrl,
-          //   boxes: this.state.boxes,
-          // })
           return alert(data)
         }
-        // else {
-        // this.setState({ imageUrl: this.state.input })
         const boxes = this.calculateFaceLocations(data)
         if (boxes) {
           this.displayFaceLocations(boxes)
         }
-        // }
       })
       .catch((err) => {
-        console.log('here' + err)
+        console.error(err)
         this.setState({ input: '', imageUrl: '', boxes: [], loading: false })
         alert(err)
       })
-    // .finally(() => {
-    //   this.setState({ loading: false })
-    // })
   }
 
   render() {
     return (
       <div>
-        {/* <ParticleBackground />
-        <Navigation /> */}
         <Logo />
         <Rank />
         <ImageLinkForm

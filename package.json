@@ -11,6 +11,7 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
     "react-parallax-tilt": "^1.7.154",
     "react-particles": "^2.11.0",
@@ -48,7 +49,6 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-typescript": "^7.22.10",
     "customize-cra": "^1.0.0",
-    "react-app-rewired": "^2.2.1",
     "tailwindcss": "^3.3.3",
     "tsparticles-engine": "^2.11.1"
   }

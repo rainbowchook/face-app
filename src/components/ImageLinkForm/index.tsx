@@ -39,7 +39,6 @@ const ImageLinkForm: React.FC<ImageLinkFormProps> = ({
             disabled={loading}
           >
             {loading ? <Spinner /> : 'Detect'}
-            {/* {'Detect'} */}
           </button>
           <span id="description-detect" hidden>
             Clicking will detect faces

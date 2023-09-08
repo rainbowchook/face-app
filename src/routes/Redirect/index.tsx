@@ -6,16 +6,16 @@ interface ProtectedRouteProps {
   children?: ReactNode
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+const Redirect: React.FC<ProtectedRouteProps> = ({
   children,
 }): JSX.Element => {
   const { currentUser } = useAuthContext()
   const location = useLocation()
 
-  if (!currentUser) {
-    return <Navigate to="/signin" state={{ from: location }} replace />
+  if (currentUser) {
+    return <Navigate to="/" state={{ from: location }} replace />
   }
   return <>{children}</>
 }
 
-export default ProtectedRoute
+export default Redirect

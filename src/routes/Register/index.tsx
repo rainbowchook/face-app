@@ -38,7 +38,6 @@ const Register: React.FC = () => {
     })
       .then((res) => res.json())
       .then((user: User) => {
-        console.log(user) //update context
         if(!user.id) {
           throw new Error('Unable to sign user in')
         }
@@ -47,7 +46,6 @@ const Register: React.FC = () => {
       })
       .catch((error) => {
         alert(error)
-        // navigate('/register')
       })
   }
 
@@ -122,9 +120,6 @@ const Register: React.FC = () => {
             <Link className="form-link" to="/signin">
               Sign In
             </Link>
-            {/* <a href="#0" className="form-link">
-              Forgot your password?
-            </a> */}
           </div>
         </form>
       </main>

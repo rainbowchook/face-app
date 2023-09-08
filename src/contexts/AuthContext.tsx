@@ -63,10 +63,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // }, [currentUser, setCurrentUser, setSessionUser])
 
   useEffect(() => {
-    if (sessionUser !== currentUser) {
+    if (!sessionUser || sessionUser !== currentUser) {
       setSessionUser(currentUser)
     }
-    return () => setSessionUser(null)
+    // return () => setSessionUser(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser])
 

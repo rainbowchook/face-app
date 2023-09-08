@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box } from '../../routes/Home'
-import { truncate } from '../utilities'
+import { truncate } from '../../utilities'
 
 type Colors = {
   [key: string]: string
@@ -29,7 +29,6 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
   const [hovering, setHovering] = useState(false)
 
   const toggleActivate = (index: number, activated: boolean): void => {
-    // const activated = !hovering
     setHovering(activated)
     activated ? setActiveFace(index) : setActiveFace(0)
   }
@@ -71,17 +70,6 @@ const FaceRecognition: React.FC<FaceRecognitionProps> = ({
                   onMouseEnter={() => toggleActivate(index, true)}
                   onMouseLeave={() => toggleActivate(index, false)}
                 >
-                  {/* <div className="w-full h-full"></div> */}
-                  {/* <div
-                    className={`box-label ${
-                      hovering && index === activeFace ? '' : 'truncate'
-                    } ${
-                      hovering && index !== activeFace ? 'inactive-box' : ''
-                    }`}
-                  >
-                    {`${name} | ${truncate(value, 4)}`}
-                  </div> */}
-                  {/* bg-[${colors[`${name}`]}] */}
                 </div>
                 {hovering && (
                   <span

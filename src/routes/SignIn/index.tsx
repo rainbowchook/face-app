@@ -37,7 +37,6 @@ const SignIn: React.FC = () => {
     })
       .then((res) => res.json())
       .then((user: User) => {
-        console.log(user)
         if(!user.id) {
           throw new Error('Unable to sign user in')
         }
@@ -46,7 +45,6 @@ const SignIn: React.FC = () => {
       })
       .catch((error) => {
         alert(error)
-        // navigate('/signin')
       })
   }
 
@@ -105,9 +103,6 @@ const SignIn: React.FC = () => {
             <Link className="form-link" to="/register">
               Register
             </Link>
-            {/* <a href="#0" className="form-link">
-              Forgot your password?
-            </a> */}
           </div>
         </form>
       </main>
