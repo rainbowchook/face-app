@@ -11,15 +11,20 @@
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "react": "^18.2.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.2.0",
+    "react-parallax-tilt": "^1.7.154",
+    "react-particles": "^2.11.0",
+    "react-router-dom": "^6.14.2",
     "react-scripts": "5.0.1",
+    "tsparticles-slim": "^2.11.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -39,5 +44,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/plugin-transform-typescript": "^7.22.10",
+    "customize-cra": "^1.0.0",
+    "tailwindcss": "^3.3.3",
+    "tsparticles-engine": "^2.11.1"
   }
 }
