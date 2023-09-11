@@ -1,7 +1,19 @@
-# Getting Started with Create React App
+# Faces App
+
+This front-end web project was deployed to [https://face-app-lilac.vercel.app/](https://face-app-lilac.vercel.app/).
+
+The GitHub repo of the corresponding API that this front-end app calls is on (https://github.com/rainbowchook/face-app-api)[https://github.com/rainbowchook/face-app-api].  
+
+
+## Description
+
+It is a Single Page Application (SPA) that allows users to detect faces and their associated emotions in images. 
+
+This is the front-end part of a full-stack Postgresql-Express-React-NodeJS (PERN) application.  
+
+The front-end app was created with ReactJS, TailwindCSS
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-Project deployed to [https://face-app-lilac.vercel.app/](https://face-app-lilac.vercel.app/)
 
 ## Available Scripts
 
