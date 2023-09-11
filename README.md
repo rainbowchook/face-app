@@ -1,5 +1,7 @@
 # Faces App
 
+It is a Single Page Application (SPA) that allows users to detect faces and their associated emotions or sentiments in images. 
+
 This front-end web project was deployed to [https://face-app-lilac.vercel.app/](https://face-app-lilac.vercel.app/).
 
 The GitHub repo of the corresponding API that this front-end app calls is on (https://github.com/rainbowchook/face-app-api)[https://github.com/rainbowchook/face-app-api].  
@@ -7,13 +9,23 @@ The GitHub repo of the corresponding API that this front-end app calls is on (ht
 
 ## Description
 
-It is a Single Page Application (SPA) that allows users to detect faces and their associated emotions in images. 
-
 This is the front-end part of a full-stack Postgresql-Express-React-NodeJS (PERN) application.  
 
-The front-end app was created with ReactJS, TailwindCSS
+The front-end app was created with ReactJS and TailwindCSS for custom UI design.  It makes use of a serverless function to redirect HTTP requests to the server as it is hosted 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the TypeScript template.
+
+
+#### Use of HTTP instead of HTTPS
+As this project is deliberately kept low-cost by requiring a new stack to be deployed each time, no domain nor CA was purchased for a secure HTTPS connection.  The stack is always destroyed after testing.
+
+Port 80 will be open, thus the front-end client will make calls to http://<EC2_public_URL>.
+
+As the browser will not allow mixed media content to be served (the server is serving over HTTP instead of HTTPS), all requests from the front-end client will be routed through a serverless function, deployed together with the front-end app to Vercel, thus bypassing browser restrictions.
+
+## References
+
+[Mixed media content: Website delivers HTTPS pages but contains HTTP links](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content)
 
 ## Available Scripts
 
