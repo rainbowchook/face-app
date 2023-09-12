@@ -1,8 +1,9 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { serverUrl } from '../Home'
+// import { serverUrl } from '../Home'
 import { useAuthContext } from '../../hooks/useAuthContext'
 import { User } from '../../contexts/AuthContext'
+import { constructedUrl } from '../Home'
 
 export type SignInForm = {
   email: string;
@@ -26,7 +27,7 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    fetch(`${serverUrl}/users/signin`, {
+    fetch(`${constructedUrl}/users/signin`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
