@@ -37,6 +37,8 @@ interface AppState {
 }
 
 export const serverUrl: string = process.env.REACT_APP_SERVER_URL!
+export const apiUrl = "/api/proxy"
+export const constructedUrl = `${apiUrl}?backendUrl=${serverUrl}`
   // process.env.NODE_ENV !== 'production'
   //   ? 'http://localhost:4000'
   //   : process.env.REACT_APP_SERVER_URL
@@ -62,7 +64,7 @@ class Home extends Component<{}, AppState> {
   updateUserEntries = async (currentUser: User): Promise<any> => {
     const { id } = currentUser
     try {
-      const res = await fetch(`${serverUrl}/users/${currentUser.id}/image`, {
+      const res = await fetch(`${constructedUrl}/users/${currentUser.id}/image`, {
         method: 'PUT',
         headers: {
           Accept: 'application/json',
@@ -141,7 +143,7 @@ class Home extends Component<{}, AppState> {
       return alert('Please enter URL')
     }
     this.setState({ imageUrl: this.state.input, loading: true })
-    fetch(`${serverUrl}/images`, {
+    fetch(`${constructedUrl}/images`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

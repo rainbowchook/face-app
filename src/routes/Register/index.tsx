@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { SignInForm } from '../SignIn'
-import { serverUrl } from '../Home'
+// import { serverUrl } from '../Home'
 import { User } from '../../contexts/AuthContext'
 import { useAuthContext } from '../../hooks/useAuthContext'
+import { constructedUrl } from '../Home'
 
 type RegisterForm = SignInForm & {
   name: string
@@ -27,7 +28,7 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
-    fetch(`${serverUrl}/users`, {
+    fetch(`${constructedUrl}/users`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
