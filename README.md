@@ -4,7 +4,7 @@ It is a Single Page Application (SPA) that allows users to detect faces and thei
 
 This front-end web project was deployed to [https://face-app-lilac.vercel.app/](https://face-app-lilac.vercel.app/).
 
-The GitHub repo of the corresponding API that this front-end app calls is on (https://github.com/rainbowchook/face-app-api)[https://github.com/rainbowchook/face-app-api].  
+The GitHub repo of the corresponding API that this front-end app calls is on [https://github.com/rainbowchook/face-app-api](https://github.com/rainbowchook/face-app-api).  
 
 
 ## Description
