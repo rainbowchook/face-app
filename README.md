@@ -15,6 +15,9 @@ The front-end app was created with ReactJS and TailwindCSS for custom UI design.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the TypeScript template.
 
+### Serverless Function
+
+As the app is deployed to Vercel, the serverless function for NodeJS is implemented as required by Vercel.  Each named file in the /api directory is a separate route.  
 
 #### Use of HTTP instead of HTTPS
 As this project is deliberately kept low-cost by requiring a new stack to be deployed each time, no domain nor CA was purchased for a secure HTTPS connection.  The stack is always destroyed after testing.
