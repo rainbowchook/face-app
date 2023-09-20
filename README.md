@@ -56,7 +56,7 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 4. /routes stores React components for client side routing with the React Router DOM library, without needing a full page reload.  Routes include: Home, ProtectedRoute, Register, Root and SignIn components.
 
-5. /utilities stores reusable utility functions that are pure functions, like the <code>truncate</code> function for formatting a number to a 
+5. /utilities stores reusable utility functions that are pure functions, like the <code>truncate</code> function for formatting a number by truncting it to two decimal places.
 
 ### Available Scripts
 
