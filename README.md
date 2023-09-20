@@ -63,6 +63,7 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 ### Authentication Context
 
+#### useAuth() custom hook to provide AuthContext
 
 #### Use of local storage to persist user auth status
 
