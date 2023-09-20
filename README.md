@@ -80,24 +80,24 @@ Port 80 will be open, thus the front-end client will make calls to http://<EC2_p
 As the browser will not allow mixed media content to be served (the server is serving over HTTP instead of HTTPS), all requests from the front-end client will be routed through a serverless function, deployed together with the front-end app to Vercel, thus bypassing browser restrictions.
 
 
-#### Enhancements/Todos
+## Enhancements/Todos
 
 Possible refactoring:
 
-##### Get a ref to the image
+### Get a ref to the image
 1. In the Home component, the calculateFaceLocations function gets a direct reference to the DOM object that is the image element by using <code>const image = document.getElementById('inputImage') as HTMLImageElement</code>.  A ref can be defined in the Home component to access the element <code>const imgRef = useRef()</code>, and then passed to the FaceRecognition component to be assigned to the <code>ref</code> attribute of the image element: <code><img ref={imgRef} /></code>.  After mounting, access the DOM element with <code>imgRef.current</code>.
 
-##### Implement component separation to replace repeated UI features:
+### Implement component separation to replace repeated UI features:
 Smart components are app-level components that perform functions and keep track of state, while dumb components just render UI based on props received and may manage own state but do not impact app-level state.  Smart components that were situated in this folder could have gone into their own /container folder if the project scales.  Traditionally, smart components are class-based and passes props to presentational components.  
 
 1. The FaceRecognition component could have rendered a dumb FaceRecognitionWithBoundingBoxes component by passing in the bounding box and sentiments data.
 2. A Navigation container could have rendered dumb NavigationUserLoggedOut and NavigationUserLoggedIn components by passing in the currentUser logged in.  
 
-##### Centralise fetch API logic in custom hook
+### Centralise fetch API logic in custom hook
 1. Centralise fetch API functionality in the custom hook useFetchAPI, which will return the loading, error or data states to the Home, Register and SignIn components that call fetch API.
 2. The URL fetched can be constructed from within the useFetchAPI hook by concatenating the URL of the serverless function with the required endpoint of the backend API as part of the query parameter.
 
-##### Create a main route configuration file or router based on routes data
+### Create a main route configuration file or router based on routes data
 1. Instead of specifying all the routes in the App component itself, further component separation can be implemented by [placing the routes into a Router component](https://dev.to/kachiic/the-right-way-structure-your-react-router-1i3) that will map over individual pages from another pagesData file that passes in the title, path and element of each route. 
 
 ## References
