@@ -10,7 +10,7 @@ The GitHub repo of the corresponding API that this front-end app calls is on (ht
 
 This is the front-end part of a full-stack Postgresql-Express-React-NodeJS (PERN) application.  
 
-The front-end app was created with ReactJS and TailwindCSS for custom UI design.  It makes use of a serverless function to redirect HTTP requests to the server as it is hosted 
+The front-end app was created with ReactJS, TypeScript and TailwindCSS for custom UI design.  It makes use of a serverless function on Vercel to redirect HTTP requests to the server hosted on an EC2 Spot Instance.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the TypeScript template.
 
@@ -60,6 +60,11 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 ### Available Scripts
 
+
+### Authentication Context
+
+
+#### Use of local storage to persist user auth status
 
 
 ### Challenges
