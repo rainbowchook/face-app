@@ -114,7 +114,7 @@ Only two smart components are class-based components: Home and App.  All others 
 
 The types of Props and State are passed in as type parameters e.g. <code>class Home extends Component<{}, AppState></code>, where AppState is defined as an interface within the same file.
 
-Props are passed in to Functional Components as type parameters e.g. <code>const FaceRecognition: React.FC<FaceRecognitionProps></code>, where FaceRecognitionProps is defined as an interface within the same file.
+Props are passed in to Functional Components as type parameters e.g. `const FaceRecognition: React.FC<FaceRecognitionProps>`, where FaceRecognitionProps is defined as an interface within the same file.
 
 
 ### Authentication Context
