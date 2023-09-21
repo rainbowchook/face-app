@@ -134,9 +134,18 @@ import { AuthContext, User } from '../../contexts/AuthContext'
 
 static contextType = AuthContext
 declare context: React.ContextType<typeof AuthContext> 
-```  
+```
 
-To enable TypeScript namespaces, `@babel/plugin-transform-typescript` has to be added to the Babel configuration before all other plugins.
+When building the CRA app with the 'declare' field, an error similar to this is produced: 
+```
+TypeScript 'declare' fields must first be transformed by @babel/plugin-transform-typescript.
+If you have already enabled that plugin (or '@babel/preset-typescript'), make sure that it runs before any plugin related to additional class features:
+ - @babel/plugin-proposal-class-properties
+ - @babel/plugin-proposal-private-methods
+ - @babel/plugin-proposal-decorators
+```
+
+To enable TypeScript namespaces, `@babel/plugin-transform-typescript` with `allowDeclareFields: true` has to be added to the Babel configuration.  
 
 Instead of running the `eject` script that comes with Create React App to customise one line for the Babel configuration, the [customize-cra](https://github.com/arackaf/customize-cra/) library that depends on the [react-app-rewired](https://github.com/timarney/react-app-rewired) library was installed in order to tweak the create-react-app configuration by adding plugins, loaders, etc.
 
@@ -205,6 +214,27 @@ module.exports = override(
 }
 ```
 5. As this is a TypeScript project, a compile error will be generated as the <code>config-overrides.js</code> file is CommonJS.  Changing the code to ESM with <code>import</code> statements still produces an error as a call is made to another <code>config-overrides.js</code> from within <code>/node_modules</code> folder. In the <code>tsconfig.json</code> file, change the `module` key value from `esnext` to `CommonJS`.
+
+##### Alternative solution
+
+For TS pre 3.7:
+```
+static contextType = AuthContext
+- declare context: React.ContextType<typeof AuthContext>
++ context!: React.ContextType<typeof AuthContext>
+```
+Recommended by VS Code IDE:
+```
+(property) Home.context: AuthContextType | undefined
+If using the new style context, re-declare this in your class to be the React.ContextType of your static contextType. Should be used with type annotation or static contextType.
+
+static contextType = MyContext
+// For TS pre-3.7:
+context!: React.ContextType<typeof MyContext>
+// For TS 3.7 and above:
+declare context: React.ContextType<typeof MyContext>
+@see — https://react.dev/reference/react/Component#context
+```
 
 #### Serverless Function
 
@@ -279,6 +309,8 @@ Smart components are app-level components that perform functions and keep track 
 #### Allowing TypeScript namespaces in Create-React-App by installing Babel plugin for TypeScript
 
 [Simplest way to install Babel plugins in Create React App](https://dev.to/ansonh/simplest-way-to-install-babel-plugins-in-create-react-app-7i5)
+
+[TypeScript 'declare' fields must first be trasnformed by @babel/plugin-transform-typescript](https://stackoverflow.com/questions/70690029/typescript-declare-fields-must-first-be-transformed-by-babel-plugin-transform)
 
 [How to allow namespaces in CRA?](https://stackoverflow.com/questions/61240655/how-to-allownamespaces-in-cra)
 
