@@ -30,6 +30,56 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 7. On user signout, the user is navigated to the SignIn page if the user is still on the Home page, which is a protected route.
 
+## Available Scripts
+
+### npm scripts defined in package.json ###
+The <code>npm</code> package manager is used.  From the package.json: 
+
+Build script:
+```
+npm run build
+```
+Production Run script:
+```
+npm run start
+```
+Dev Run script:
+```
+npm run dev
+```
+
+### Vercel dev setup
+This project is deployed to Vercel, utilising a serverless function.  The CRA project can be locally tested together with the serverless function from within a Vercel dev server.
+
+To run the project from within the Vercel dev server: 
+1. Install the Vercel CLI globally
+```
+npm i -g vercel
+```
+2. Verify the version of Vercel CLI currently being used
+```
+vercel --version
+```
+3. Login and authenticate with <code>vercel login</code> before accessing resources or performing administrative tasks i.e. deploying to Vercel from a terminal environment.  Alternatively, <code>--token</code> can be passed as an option to a <code>vercel</code> command if a Vercel token was defined.
+
+4. To replicate the Vercel deployment environment locally and test the Vercel project before deploying, use:
+```
+vercel dev
+```
+
+#### Change default vercel command settings
+The default script run by <code>vercel dev</code> seems to be <code>react-scripts start</code>, but the scripts have been reconfigured to use <code>react-app-rewired start</code>.  Additional configuration is needed to configure <code>vercel dev</code> to run the correct script.  
+
+Create <code>vercel.json</code> with the following code:
+```
+{
+  "devCommand": "npm run dev"
+}
+```
+Add `"dev": "npm run start"` to `"scripts"` in the <code>package.json</code>.
+
+Alternatively, just set the `"devCommand"` to `"npm run start"` in <code>vercel.json</code> without having to create the additional `"dev"` script in <code>package.json</code>.
+
 ## Architectural Overview
 
 ### Folder structure
@@ -58,7 +108,13 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 5. /utilities stores reusable utility functions that are pure functions, like the <code>truncate</code> function for formatting a number by truncating it to two decimal places.
 
-### Available Scripts
+### Functional vs Class Components
+
+Only two smart components are class-based components: Home and App.  All others are React Functional Components, or FC as the alias.  
+
+The types of Props and State are passed in as type parameters e.g. <code>class Home extends Component<{}, AppState></code>, where AppState is defined as an interface within the same file.
+
+Props are passed in to Functional Components as type parameters e.g. <code>const FaceRecognition: React.FC<FaceRecognitionProps></code>, where FaceRecognitionProps is defined as an interface within the same file.
 
 
 ### Authentication Context
@@ -72,11 +128,101 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 #### Use of react-app-rewired
 
-Use of createContext in the Home class component
+Use of `declare context` in the Home class component required use of TypeScript namespaces, which are not supported in Babel by default.  
+```typescript
+import { AuthContext, User } from '../../contexts/AuthContext'
+
+static contextType = AuthContext
+declare context: React.ContextType<typeof AuthContext> 
+```  
+
+To enable TypeScript namespaces, `@babel/plugin-transform-typescript` has to be added to the Babel configuration before all other plugins.
+
+Instead of running the `eject` script that comes with Create React App to customise one line for the Babel configuration, the [customize-cra](https://github.com/arackaf/customize-cra/) library that depends on the [react-app-rewired](https://github.com/timarney/react-app-rewired) library was installed in order to tweak the create-react-app configuration by adding plugins, loaders, etc.
+
+1. Install customize-cra and react-app-rewired:
+```
+npm i customize-cra react-app-rewired --save-dev
+```
+2. Create the <code>config-overrides.js</code> file at the project root folder with the following code:
+```
+const { useBabelRc, override } = require("customize-cra");
+// eslint-disable-next-line react-hooks/rules-of-hooks
+module.exports = override(useBabelRc());
+```
+3. Create the <code>.babelrc</code> file at the project root folder and define the following plugin:
+```
+{
+  "plugins": [
+    [
+      "@babel/plugin-transform-typescript",
+      {
+        "allowDeclareFields": true
+      }
+    ]
+  ]
+}
+```
+Alternatively, directly register the Babel plugin(s) in <code>config-overrides.js</code> without the need for a separate <code>/babelrc</code> file:
+```
+const {
+    override,
+    addExternalBabelPlugin
+  } = require("customize-cra");
+
+module.exports = override(
+    addExternalBabelPlugin([
+        "@babel/plugin-transform-typescript",
+        { allowNamespaces: true }
+    ])
+);
+```
+Or:
+```
+// Overrides create-react-app webpack configs without ejecting
+// https://github.com/timarney/react-app-rewired
+
+const { addBabelPlugins, override } = require("customize-cra");
+module.exports = override(
+  ...addBabelPlugins(
+    "babel-plugin-myPlugin"
+    /* Add plug-in names here (separate each value by a comma) */
+  )
+);
+```
+4. In the package.json, 'flip' the existing calls to `react-scripts` for start, build and test:
+```
+  /* package.json */
+
+  "scripts": {
+-   "start": "react-scripts start",
++   "start": "react-app-rewired start",
+-   "build": "react-scripts build",
++   "build": "react-app-rewired build",
+-   "test": "react-scripts test",
++   "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+}
+```
+5. As this is a TypeScript project, a compile error will be generated as the <code>config-overrides.js</code> file is CommonJS.  Changing the code to ESM with <code>import</code> statements still produces an error as a call is made to another <code>config-overrides.js</code> from within <code>/node_modules</code> folder. In the <code>tsconfig.json</code> file, change the `module` key value from `esnext` to `CommonJS`.
 
 #### Serverless Function
 
-As the app is deployed to Vercel, the serverless function for NodeJS is implemented as required by Vercel.  Each named file in the /api directory is a separate route.  
+As the app is deployed to Vercel, the serverless function for NodeJS is implemented as required by Vercel.  
+
+Pre-requisite: The serverless function makes an async call to the backend server using Axios.  Install Axios library first: <code>npm i axios</code>
+
+1. Create an <code>/api</code> folder at the project root directory.
+
+2. Create a file <code>proxy.ts</code> in the <code>/api</code> folder.  Each named file in the /api directory is a separate route.
+
+3. As this is a TypeScript file, the type definitions must be installed: <code>npm i @vercel/node --save-dev</code>.  The request and response objects passed to the handler function will be of types <code>VercelRequest</code> and <code>VercelResponse</code>
+
+4. Define an async function in <code>proxy.ts</code> to forward the request to the backend server using Axios.
+
+5. The `backendUrl` is obtained as part of the query parameter, which is then passed as a url string to an axios call with the same request method, headers and body as the originating call from the client app.
+
+6. The response from the backend server is passed back to the client.  Otherwise, an error is putput to the console and a 500 internal server error returned.
 
 ##### Use of HTTP instead of HTTPS
 As this project is deliberately kept low-cost by requiring a new stack to be deployed each time, no domain nor CA was purchased for a secure HTTPS connection.  The stack is always destroyed after testing.
@@ -130,9 +276,19 @@ Smart components are app-level components that perform functions and keep track 
 
 [The Right Way to Structure your React Router](https://dev.to/kachiic/the-right-way-structure-your-react-router-1i3l)
 
-#### Others
+#### Allowing TypeScript namespaces in Create-React-App by installing Babel plugin for TypeScript
+
+[Simplest way to install Babel plugins in Create React App](https://dev.to/ansonh/simplest-way-to-install-babel-plugins-in-create-react-app-7i5)
+
+[How to allow namespaces in CRA?](https://stackoverflow.com/questions/61240655/how-to-allownamespaces-in-cra)
+
+[@babel/plugin-transform-typescript](https://babeljs.io/docs/babel-plugin-transform-typescript)
+
+[@babel/preset-typescript](https://babeljs.io/docs/babel-preset-typescript)
 
 [React App Rewired GitHub repo](https://github.com/timarney/react-app-rewired)
+
+#### Others
 
 [React useRef() Hook Explained in 3 steps](https://dmitripavlutin.com/react-useref/)
 
@@ -146,55 +302,31 @@ Smart components are app-level components that perform functions and keep track 
 
 [React 18 Improves Application Performance - useTransition hook to defer/interrupt rendering of low-priority task to keep the UI interactive](https://vercel.com/blog/how-react-18-improves-application-performance)
 
-### Others
+### Vercel
+
+[Vercel CLI: Overview](https://vercel.com/docs/cli)
+
+[Vercel CLI: dev](https://vercel.com/docs/cli/dev)
 
 [Vercel Serverless Functions `type: "module"` got error](https://github.com/orgs/vercel/discussions/1225)
 
+### TypeScript
+
+[TypeScript file extension for JSX should be <code>.tsx</code> instead of <code>.ts</code>](https://stackoverflow.com/a/57947249)
+
+[Difference between esnext, es6, es2015 module targets](https://github.com/microsoft/TypeScript/issues/24082)
+
+[TypeScript Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
+
+### Others
+
 [Truncate decimal numbers in JavaSript](https://stackoverflow.com/a/64082140)
 
-[process not defined in browser ]
+[process not defined in browser](https://www.reddit.com/r/reactjs/comments/m452dv/processenv_process_is_not_defined/?rdt=57516)
 
 [Mixed media content: Website delivers HTTPS pages but contains HTTP links](https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content/How_to_fix_website_with_mixed_content)
 
-## Available Scripts
+[Web API error - This request has been blocked; the content must be served over HTTPS](https://stackoverflow.com/a/52133425)
 
-In the project directory, you can run:
+[W3C Accessibility Checker](https://www.accessibilitychecker.org/guides/wcag/)
 
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
