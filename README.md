@@ -36,15 +36,15 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 The <code>npm</code> package manager is used.  From the package.json: 
 
 Build script:
-```
+```bash
 npm run build
 ```
 Production Run script:
-```
+```bash
 npm run start
 ```
 Dev Run script:
-```
+```bash
 npm run dev
 ```
 
@@ -53,17 +53,17 @@ This project is deployed to Vercel, utilising a serverless function.  The CRA pr
 
 To run the project from within the Vercel dev server: 
 1. Install the Vercel CLI globally
-```
+```bash
 npm i -g vercel
 ```
 2. Verify the version of Vercel CLI currently being used
-```
+```bash
 vercel --version
 ```
 3. Login and authenticate with <code>vercel login</code> before accessing resources or performing administrative tasks i.e. deploying to Vercel from a terminal environment.  Alternatively, <code>--token</code> can be passed as an option to a <code>vercel</code> command if a Vercel token was defined.
 
 4. To replicate the Vercel deployment environment locally and test the Vercel project before deploying, use:
-```
+```bash
 vercel dev
 ```
 
@@ -71,7 +71,7 @@ vercel dev
 The default script run by <code>vercel dev</code> seems to be <code>react-scripts start</code>, but the scripts have been reconfigured to use <code>react-app-rewired start</code>.  Additional configuration is needed to configure <code>vercel dev</code> to run the correct script.  
 
 Create <code>vercel.json</code> with the following code:
-```
+```js
 {
   "devCommand": "npm run dev"
 }
@@ -150,17 +150,17 @@ To enable TypeScript namespaces, `@babel/plugin-transform-typescript` with `allo
 Instead of running the `eject` script that comes with Create React App to customise one line for the Babel configuration, the [customize-cra](https://github.com/arackaf/customize-cra/) library that depends on the [react-app-rewired](https://github.com/timarney/react-app-rewired) library was installed in order to tweak the create-react-app configuration by adding plugins, loaders, etc.
 
 1. Install customize-cra and react-app-rewired:
-```
+```bash
 npm i customize-cra react-app-rewired --save-dev
 ```
 2. Create the <code>config-overrides.js</code> file at the project root folder with the following code:
-```
+```js
 const { useBabelRc, override } = require("customize-cra");
 // eslint-disable-next-line react-hooks/rules-of-hooks
 module.exports = override(useBabelRc());
 ```
 3. Create the <code>.babelrc</code> file at the project root folder and define the following plugin:
-```
+```js
 {
   "plugins": [
     [
@@ -173,7 +173,7 @@ module.exports = override(useBabelRc());
 }
 ```
 Alternatively, directly register the Babel plugin(s) in <code>config-overrides.js</code> without the need for a separate <code>/babelrc</code> file:
-```
+```js
 const {
     override,
     addExternalBabelPlugin
@@ -187,7 +187,7 @@ module.exports = override(
 );
 ```
 Or:
-```
+```js
 // Overrides create-react-app webpack configs without ejecting
 // https://github.com/timarney/react-app-rewired
 
