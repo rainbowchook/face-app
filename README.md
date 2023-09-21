@@ -200,7 +200,7 @@ module.exports = override(
 );
 ```
 4. In the package.json, 'flip' the existing calls to `react-scripts` for start, build and test:
-```
+```diff
   /* package.json */
 
   "scripts": {
@@ -218,7 +218,7 @@ module.exports = override(
 ##### Alternative solution
 
 For TS pre 3.7:
-```
+```diff
 static contextType = AuthContext
 - declare context: React.ContextType<typeof AuthContext>
 + context!: React.ContextType<typeof AuthContext>
