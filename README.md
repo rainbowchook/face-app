@@ -125,7 +125,7 @@ An Authentication Context was created by passing into <code>React.createContext<
 #### AuthProvider
 The Authentication Provider is a typical React Functional Component, with <code>AuthProviderProps</code> passed in as a type parameter.  As it receives `children` as props, <code>AuthProviderProps</code> type was defined with a `children` property of type `ReactNode`.  
 
-It provides the values of the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that wrapped within the enclosed <Code><AuthProvider> ... </AuthProvider></code> tags used in the <code>App</code> component.
+It provides the values of the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that wrapped within the enclosed <code><AuthProvider> ... </AuthProvider></code> tags used in the <code>App</code> component.
 
 The AuthProvider keeps two states, <code>currentUser</code> and <code>sessionUser</code>, with the <code>useState()</code> and <code>useLocalStorage()</code> hooks respectively.  The <code>currentUser</code> is the user that logged in via the app, and the <code>sessionUser</code> is the user that was stored in the local storage as the last user logged in.  
 
