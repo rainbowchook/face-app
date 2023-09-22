@@ -25,7 +25,7 @@ export function useLocalStorage<T> (key: string, initialValue: T): [T, SetValue<
 
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
-  const [storedValue, setStoredValue] = useState(readValue)
+  const [storedValue, setStoredValue] = useState<T>(readValue)
   
   // Return a wrapped version of useState's setter function that persists the new value to the localStorage
   const setValue: SetValue<T> = useCallback((value) => {
