@@ -330,7 +330,7 @@ Pre-requisite: The serverless function makes an async call to the backend server
 
 4. Define an async function in <code>proxy.ts</code> to forward the request to the backend server using Axios.
 
-5. The `backendUrl` is obtained as part of the query parameter, which is then concatenated with the `serverUrl` and passed as a url string to an axios call with the same request method, headers and body as the originating call from the client app.  
+5. The `backendUrl` is obtained as part of the query parameter, which is then concatenated with the `serverUrl` and passed as a url string to an axios call with the same request method, headers and body as the originating call from the client app.  In this way, all requests will be routed to the backend server specified at deployment time as a security measure.
 
 6. The response from the backend server is passed back to the client.  Otherwise, an error is putput to the console and a 500 internal server error returned to the client.  The detailed error can be viewed on the server console or from the error logs in the Vercel dashboard.
 
