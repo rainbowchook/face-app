@@ -138,7 +138,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     'currentUser',
     currentUser
   )
+
 ...
+
   const authContextValue: AuthContextType = {
     currentUser,
     signIn,
@@ -187,7 +189,9 @@ Instead of passing in an initial state value to `React.useState()` hook, a funct
 A `storedValue` of type T is set to the `initialValue` of the `key` passed in as parameters to the `useLocalStorage` hook, returning an array consisting of a `storedValue` of type T and a `setValue` function of type `SetValue<T>`, following the return type of a `React.useState()` hook:
 ```typescript
 export function useLocalStorage<T> (key: string, initialValue: T): [T, SetValue<T>] {
+
 ...
+
   return [storedValue, setValue]
 }
 ```
