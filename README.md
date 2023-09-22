@@ -119,9 +119,34 @@ Props are passed in to Functional Components as type parameters e.g. `const Face
 
 ### Authentication Context
 
-#### useAuth() custom hook to provide AuthContext
+#### AuthContext
+An Authentication Context was created by passing into <code>React.createContext</code> the <code>AuthContext</code> as a type parameter, and the AuthContext passed in contains the default values for the <code>currentUser</code> logged in, as well as the <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions.  
 
-#### Use of local storage to persist user auth status
+#### AuthProvider
+The Authentication Provider is a typical React Functional Component, with <code>AuthProviderProps</code> passed in as a type parameter.  As it receives `children` as props, <code>AuthProviderProps</code> type was defined with a `children` property of type `ReactNode`.  
+
+It provides the values of the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that wrapped within the enclosed <Code><AuthProvider> ... </AuthProvider></code> tags used in the <code>App</code> component.
+
+The AuthProvider keeps two states, <code>currentUser</code> and <code>sessionUser</code>, with the <code>useState()</code> and <code>useLocalStorage()</code> hooks respectively.  The <code>currentUser</code> is the user that logged in via the app, and the <code>sessionUser</code> is the user that was stored in the local storage as the last user logged in.  
+
+A <code>useEffect()</code> hook will update the <code>sessionUser</code> to the <code>currentUser</code> if the <code>currentUser</code> changes.
+
+Other functions defined in the <code>AuthProvider</code> are <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions:
+
+<code>signIn</code> sets the <code>currentUser</code>
+
+<code>signOut</code> sets the <code>currentUser</code> to <code>null</code>.
+
+<code>addEntriesCount</code> sets the<code>currentUser</code> with an updated value for the `entries` property.
+
+#### useAuthContext() custom hook to provide AuthContext
+
+Instead of accessing the <AuthContext</code> directly from <code>React.useContext()</code> hook, a custom hook was created to return the <code>AuthContext</code>.  
+
+#### useLocalStorage() to persist user auth status
+
+A custom hook, <code>useLocalStorage</code>, was created to use local storage to store the authentication status of the current user, in the <code>AuthProvider</code> component.
+
 
 
 ### Challenges
@@ -366,6 +391,8 @@ Then generate the Lighthouse report in Chrome browser's DevTools to confirm that
 
 #### React Context API
 
+[Use React Context for Auth](https://dayvster.com/blog/use-context-for-auth)
+
 [React Context API: A deep dive with examples](https://blog.logrocket.com/react-context-api-deep-dive-examples/)
 
 [User Authentication with Context API and useContext, useState hooks](https://gist.github.com/sineto/52d6a4f634cb51c2a6e6013dc64be47b)
@@ -439,6 +466,8 @@ Then generate the Lighthouse report in Chrome browser's DevTools to confirm that
 [Difference between esnext, es6, es2015 module targets](https://github.com/microsoft/TypeScript/issues/24082)
 
 [TypeScript Namespaces and Modules](https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html)
+
+[TypeScript useLocalStorage custom hook](https://usehooks-ts.com/react-hook/use-local-storage)
 
 ### Others
 
