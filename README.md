@@ -147,7 +147,23 @@ Instead of accessing the <AuthContext</code> directly from <code>React.useContex
 
 A custom hook, <code>useLocalStorage</code>, was created to use local storage to store the authentication status of the current user, in the <code>AuthProvider</code> component.
 
+Instead of passing in an initial state value to `React.useState()` hook, a function can be passed in as a parameter instead - in this case, a `React.useCallback()` function that reads the `initialValue` of a `key` in the local storage.
 
+A `storedValue` of type T is set to the `initialValue` of the `key` passed in as parameters to the `useLocalStorage` hook, returning an array consisting of a `storedValue` of type T and a `setValue` function of type `SetValue<T>`, following the return type of a `React.useState()` hook:
+```typescript
+export function useLocalStorage<T> (key: string, initialValue: T): [T, SetValue<T>] {
+...
+  return [storedValue, setValue]
+}
+```
+
+As `localStorage` is only available to the `window` object within a browser, there is a check for whether `window` is `undefined` before getting or setting the value of a `key`.  
+
+A `React.useEffect()` hook sets the `storedValue` to the new `initialValue` passed in to the `useLocalStorage` hook.
+
+If the local storage returns `null` for a particular `key`, the `storedValue` will be initialised to the `initialValue`.  If not, the value for `key` stored in the local storage will be parsed into a JSON object of type T and returned.  
+
+A `setValue` function is defined so that the new value is set in the local storage with the `key` and stringified version of the new `storedValue`.  
 
 ### Challenges
 
