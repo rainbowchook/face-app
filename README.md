@@ -280,7 +280,88 @@ Smart components are app-level components that perform functions and keep track 
 2. The URL fetched can be constructed from within the useFetchAPI hook by concatenating the URL of the serverless function with the required endpoint of the backend API as part of the query parameter.
 
 ### Create a main route configuration file or router based on routes data
-1. Instead of specifying all the routes in the App component itself, further component separation can be implemented by [placing the routes into a Router component](https://dev.to/kachiic/the-right-way-structure-your-react-router-1i3) that will map over individual pages from another pagesData file that passes in the title, path and element of each route. 
+1. Instead of specifying all the routes in the App component itself, further component separation can be implemented by [placing the routes into a Router component](https://dev.to/kachiic/the-right-way-structure-your-react-router-1i3) that will map over individual pages from another pagesData file that passes in the title, path and element of each route.
+
+### Convert into PWA
+This app can be converted into a Progressive Web App (PWA) without much code change, aloowing users to have an app-like experience on their mobile devices without installing a native app.  For the browser to detect the web app as an installable PWA, a service worker and web manifest must be present in the app.
+
+#### Service worker
+Enable the service worker functionality (client-side proxies that pre-cache key resources like text, images, and other content), improving browser speed.  PWAs added to the homescreen load faster and work offline when there is an active service worker.  
+
+##### Creating service worker with CRA custom template
+If creating a CRA project from scratch with custom templates via <code>npx create-react-app my-app --template cra-template-pwa-typescript</code> for TypeScript (or <code>npx create-react-app my-app --template cra-template-pwa</code>), switch the <code>serviceWorker.unregister()</code> to <code>serviceWorker.register()</code>. This will generate an offline-first service worker to automatically pre-cache all local assets and update them when there is an updated deployment.  A <code>service-worker.js</code> file and a <code>serviceWorkerRegistration</code> file will be created in the /src folder.
+
+##### Converting existing React app to PWA
+If not creating a CRA project from scratch with the <code>cra-template-pwa-typescript</code> (or <code>cra-template-pwa</code> template), then follow the following steps to [create and install the service worker](https://engineering.99x.io/converting-react-app-into-a-pwa-43a247c35886).
+
+Start by creating a <code>public/serviceWorker.js</code> file to install the service worker (SW), listen for requests and activate the SW:
+```js
+const CACHE_NAME = 'version-1';
+const urlsToCache = ['index.html', 'offline.html'];
+
+const self = this;
+
+// Install SW
+self.addEventListener('install', (event) => {
+	event.waitUntil(
+		caches.open(CACHE_NAME).then((cache) => {
+			console.log('Opened cache');
+
+			return cache.addAll(urlsToCache);
+		})
+	);
+});
+
+// Listen for requests
+self.addEventListener('fetch', (event) => {
+	event.respondWith(
+		caches.match(event.request).then(() => {
+			return fetch(event.request).catch(() => caches.match('offline.html'));
+		})
+	);
+});
+
+// Activate the SW
+self.addEventListener('activate', (event) => {
+	const cacheWhitelist = [];
+	cacheWhitelist.push(CACHE_NAME);
+
+	event.waitUntil(
+		caches.keys().then((cacheNames) =>
+			Promise.all(
+				cacheNames.map((cacheName) => {
+					if (!cacheWhitelist.includes(cacheName)) {
+						return caches.delete(cacheName);
+					}
+				})
+			)
+		)
+	);
+});
+```
+
+Add the following script to the <code>index.html</code>:
+```html
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .register('./serviceWorker.js')
+        .then((reg) => console.log('Success: ', reg.scope))
+        .catch((err) => console.log('Failure: ', err));
+      });
+    }
+</script>
+```
+
+
+Modify the <code>serviceWorker.js</code> file for offline 
+
+#### Web manifest
+Modify the web manifest file <code>manifest.json</code> to add metadata like name, icons and start URL (location of index document to start when opening the app e.g. <code>index.html</code>) for the app so that the user can add the web app to the mobile device's homescreen or desktop, mimicking installation of a native app.  Splash icons that are 512x512 pixels in size should be defined in the /public/images folder for the home screen, app launcher, task switcher, splash screen, etc.  
+
+####Lighthouse Audit
+Then generate the Lighthouse report in Chrome browser's DevTools to confirm that the app is indeed an installable PWA, among other things.  An audit checklist is generated for aspects of PWA like performance, accessibility, PWAs, etc.
 
 ## References
 
@@ -319,6 +400,18 @@ Smart components are app-level components that perform functions and keep track 
 [@babel/preset-typescript](https://babeljs.io/docs/babel-preset-typescript)
 
 [React App Rewired GitHub repo](https://github.com/timarney/react-app-rewired)
+
+#### Converting React App to PWA
+
+[Converting React App into a PWA](https://engineering.99x.io/converting-react-app-into-a-pwa-43a247c35886)
+
+[The Ultimate Guide to Converting React Apps to Progressive Web Apps](https://dev.to/icyybee/the-ultimate-guide-to-converting-react-apps-to-progressive-web-apps-1pnp)
+
+[Converting Existing React App to PWA](https://medium.com/swlh/converting-existing-react-app-to-pwa-3c7e4e773db3)
+
+[Create React App: Making a Progressive Web App](https://create-react-app.dev/docs/making-a-progressive-web-app/)
+
+[Build a progressive web app (PWA) with React](https://blog.logrocket.com/building-pwa-react/)
 
 #### Others
 
