@@ -130,7 +130,7 @@ type AuthProviderProps = {
 }
 ```
 
-It provides the values of the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that are wrapped within the enclosing `<AuthProvider> ... </AuthProvider>` tags used in the <code>App</code> component.
+It provides the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that are wrapped within the enclosing `<AuthProvider> ... </AuthProvider>` tags used in the <code>App</code> component.
 ```typescript
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<null | User>(null)
