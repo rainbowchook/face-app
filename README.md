@@ -294,7 +294,7 @@ If creating a CRA project from scratch with custom templates via <code>npx creat
 ##### Converting existing React app to PWA
 If not creating a CRA project from scratch with the <code>cra-template-pwa-typescript</code> (or <code>cra-template-pwa</code> template), then follow the following steps to [create and install the service worker](https://engineering.99x.io/converting-react-app-into-a-pwa-43a247c35886).
 
-Start by creating a <code>public/serviceWorker.js</code> file to install the service worker (SW), listen for requests and activate the SW:
+Start by creating a <code>public/serviceWorker.js</code> file to install the service worker (SW), listen for requests/serve offline cached data and activate the SW:
 ```js
 const CACHE_NAME = 'version-1';
 const urlsToCache = ['index.html', 'offline.html'];
@@ -353,9 +353,6 @@ Add the following script to the <code>index.html</code>:
     }
 </script>
 ```
-
-
-Modify the <code>serviceWorker.js</code> file for offline 
 
 #### Web manifest
 Modify the web manifest file <code>manifest.json</code> to add metadata like name, icons and start URL (location of index document to start when opening the app e.g. <code>index.html</code>) for the app so that the user can add the web app to the mobile device's homescreen or desktop, mimicking installation of a native app.  Splash icons that are 512x512 pixels in size should be defined in the /public/images folder for the home screen, app launcher, task switcher, splash screen, etc.  
