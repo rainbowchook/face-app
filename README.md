@@ -293,7 +293,7 @@ module.exports = override(
     "eject": "react-scripts eject"
 }
 ```
-5. As this is a TypeScript project, a compile error will be generated as the <code>config-overrides.js</code> file is CommonJS.  Changing the code to ESM with <code>import</code> statements still produces an error as a call is made to another <code>config-overrides.js</code> from within <code>/node_modules</code> folder. In the <code>tsconfig.json</code> file, change the `module` key value from `esnext` to `CommonJS`.
+5. As this is a TypeScript project, a compile error will be generated as the <code>config-overrides.js</code> file is CommonJS.  Changing the code to ESM with <code>import</code> statements instead of `require` statements still produces an error as a call is made to another <code>config-overrides.js</code> from within <code>/node_modules</code> folder. In the <code>tsconfig.json</code> file, change the `module` key value from `esnext` to `CommonJS`.
 
 ##### Alternative solution
 
