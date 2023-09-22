@@ -486,6 +486,13 @@ Modify the web manifest file <code>manifest.json</code> to add metadata like nam
 #### Lighthouse Audit
 Then generate the Lighthouse report in Chrome browser's DevTools to confirm that the app is indeed an installable PWA, among other things.  An audit checklist is generated for aspects of PWA like performance, accessibility, PWAs, etc.
 
+## CI/CD
+
+Continuous Integration and Continuous Deployment is achieved by integrating the Vercel for GitHub app and granting access to the face-app GitHub project.  Vercel for GitHub automatically deploys PRs to Vercel, allowing every PR to be previewed live, without any configuration required.
+
+#### Enhancements/Todo
+A GitHub action could also be configured to deploy to Vercel with the Vercel CLI and a Vercel token stored as a GitHub Actions secret.
+
 ## References
 
 ### React 
