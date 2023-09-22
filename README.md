@@ -400,7 +400,7 @@ Set the Function Region in which the serverless function will be executed in in 
 Possible refactoring:
 
 ### Get a ref to the image
-1. In the Home component, the calculateFaceLocations function gets a direct reference to the DOM object that is the image element by using <code>const image = document.getElementById('inputImage') as HTMLImageElement</code>.  A ref can be defined in the Home component to access the element <code>const imgRef = useRef()</code>, and then passed to the FaceRecognition component to be assigned to the <code>ref</code> attribute of the image element: <code><img ref={imgRef} /></code>.  After mounting, access the DOM element with <code>imgRef.current</code>.
+1. In the Home component, the calculateFaceLocations function gets a direct reference to the DOM object that is the image element by using <code>const image = document.getElementById('inputImage') as HTMLImageElement</code>.  A ref can be defined in the Home component to access the element <code>const imgRef = useRef()</code>, and then passed to the FaceRecognition component to be assigned to the <code>ref</code> attribute of the image element: `<img ref={imgRef} />`.  After mounting, access the DOM element with <code>imgRef.current</code>.
 
 ### Implement component separation to replace repeated UI features:
 Smart components are app-level components that perform functions and keep track of state, while dumb components just render UI based on props received and may manage own state but do not impact app-level state.  Smart components that were situated in this folder could have gone into their own /container folder if the project scales.  Traditionally, smart components are class-based and passes props to presentational components.  
