@@ -133,7 +133,7 @@ A <code>useEffect()</code> hook will update the <code>sessionUser</code> to the 
 
 Other functions defined in the <code>AuthProvider</code> are <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions:
 
-<code>signIn(user: User): void</code> sets the <code>currentUser</code>
+<code>signIn(user: User): void</code> sets the <code>currentUser</code>.
 
 <code>signOut(): void</code> sets the <code>currentUser</code> to <code>null</code>.
 
@@ -382,7 +382,7 @@ Add the following script to the <code>index.html</code>:
 #### Web manifest
 Modify the web manifest file <code>manifest.json</code> to add metadata like name, icons and start URL (location of index document to start when opening the app e.g. <code>index.html</code>) for the app so that the user can add the web app to the mobile device's homescreen or desktop, mimicking installation of a native app.  Splash icons that are 512x512 pixels in size should be defined in the /public/images folder for the home screen, app launcher, task switcher, splash screen, etc.  
 
-####Lighthouse Audit
+#### Lighthouse Audit
 Then generate the Lighthouse report in Chrome browser's DevTools to confirm that the app is indeed an installable PWA, among other things.  An audit checklist is generated for aspects of PWA like performance, accessibility, PWAs, etc.
 
 ## References
