@@ -36,9 +36,9 @@ interface AppState {
   loading: boolean
 }
 
-export const serverUrl: string = process.env.REACT_APP_SERVER_URL!
+// export const serverUrl: string = process.env.REACT_APP_SERVER_URL!
 export const apiUrl = "/api/proxy"
-export const constructedUrl = `${apiUrl}?backendUrl=${serverUrl}`
+export const constructedUrl = `${apiUrl}?backendUrl=`
   // process.env.NODE_ENV !== 'production'
   //   ? 'http://localhost:4000'
   //   : process.env.REACT_APP_SERVER_URL
