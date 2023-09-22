@@ -387,6 +387,13 @@ Port 80 will be open, thus the front-end client will make calls to http://<EC2_p
 
 As the browser will not allow mixed media content to be served (the server is serving over HTTP instead of HTTPS), all requests from the front-end client will be routed through a serverless function, deployed together with the front-end app to Vercel, thus bypassing browser restrictions.
 
+## CI/CD
+
+Continuous Integration and Continuous Deployment is achieved by integrating the Vercel for GitHub app and granting access to the `face-app` GitHub project.  Vercel for GitHub automatically creates deployments for any PRs to Vercel, allowing every PR to be previewed live, without any configuration required.
+
+REACT_APP_SERVER_URL must be kept in the Vercel project as an environment variable.  
+
+Set the Function Region in which the serverless function will be executed in in the same region as the backend server. 
 
 ## Enhancements/Todos
 
@@ -485,14 +492,6 @@ Modify the web manifest file <code>manifest.json</code> to add metadata like nam
 
 #### Lighthouse Audit
 Then generate the Lighthouse report in Chrome browser's DevTools to confirm that the app is indeed an installable PWA, among other things.  An audit checklist is generated for aspects of PWA like performance, accessibility, PWAs, etc.
-
-## CI/CD
-
-Continuous Integration and Continuous Deployment is achieved by integrating the Vercel for GitHub app and granting access to the `face-app` GitHub project.  Vercel for GitHub automatically creates deployments for any PRs to Vercel, allowing every PR to be previewed live, without any configuration required.
-
-REACT_APP_SERVER_URL must be kept in the Vercel project as an environment variable.  
-
-Set the Function Region in which the serverless function will be executed in is in the same region as the backend server.  
 
 #### Enhancements/Todo
 A GitHub action could also be configured to deploy to Vercel with the Vercel CLI and a Vercel token stored as a GitHub Actions secret.
