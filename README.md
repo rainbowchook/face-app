@@ -326,9 +326,55 @@ Pre-requisite: The serverless function makes an async call to the backend server
 
 4. Define an async function in <code>proxy.ts</code> to forward the request to the backend server using Axios.
 
-5. The `backendUrl` is obtained as part of the query parameter, which is then passed as a url string to an axios call with the same request method, headers and body as the originating call from the client app.
+5. The `backendUrl` is obtained as part of the query parameter, which is then concatenated with the `serverUrl` and passed as a url string to an axios call with the same request method, headers and body as the originating call from the client app.  
 
-6. The response from the backend server is passed back to the client.  Otherwise, an error is putput to the console and a 500 internal server error returned.
+6. The response from the backend server is passed back to the client.  Otherwise, an error is putput to the console and a 500 internal server error returned to the client.  The detailed error can be viewed on the server console or from the error logs in the Vercel dashboard.
+
+##### 
+From Chrome DevTools, open the Network tab and submit a request to remote server to register a user e.g. POST /users endpoint.  
+
+##### Example of a successful response:
+Successful registration returns a `User` object:
+```js
+{
+    "id": 4,
+    "name": "test3",
+    "email": "test3@test.com",
+    "entries": "0",
+    "joined": "2023-09-12T07:26:59.992Z"
+}
+```
+
+```
+Request URL:
+https://face-app-lilac.vercel.app/api/proxy?backendUrl=http://<EC2_PUBLIC_URL>.<AWS_REGION>.compute.amazonaws.com/users
+Request Method:
+POST
+Status Code:
+201
+Remote Address:
+<REMOTE_HOST_IP>:443
+Referrer Policy:
+strict-origin-when-cross-origin
+```
+
+##### Example of an error response:
+Unsuccessful registration returns a 500 error response:
+```js
+{"error":"Internal Server Error"}
+```
+```
+Request URL:
+https://face-app-lilac.vercel.app/api/proxy?backendUrl=http://<EC2_PUBLIC_URL>.<AWS_REGION>.compute.amazonaws.com/users
+Request Method:
+POST
+Status Code:
+500
+Remote Address:
+<REMOTE_HOST_IP>:443
+Referrer Policy:
+strict-origin-when-cross-origin
+```
 
 ##### Use of HTTP instead of HTTPS
 As this project is deliberately kept low-cost by requiring a new stack to be deployed each time, no domain nor CA was purchased for a secure HTTPS connection.  The stack is always destroyed after testing.
