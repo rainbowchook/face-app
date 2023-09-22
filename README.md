@@ -133,11 +133,11 @@ A <code>useEffect()</code> hook will update the <code>sessionUser</code> to the 
 
 Other functions defined in the <code>AuthProvider</code> are <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions:
 
-<code>signIn</code> sets the <code>currentUser</code>
+<code>signIn(user: User): void</code> sets the <code>currentUser</code>
 
-<code>signOut</code> sets the <code>currentUser</code> to <code>null</code>.
+<code>signOut(): void</code> sets the <code>currentUser</code> to <code>null</code>.
 
-<code>addEntriesCount</code> sets the<code>currentUser</code> with an updated value for the `entries` property.
+<code>addEntriesCount(entries: number): void</code> sets the<code>currentUser</code> with an updated value for the `entries` property.
 
 #### useAuthContext() custom hook to provide AuthContext
 
