@@ -112,7 +112,7 @@ Smart/Container components: App, FaceRecognition, Navigation.  Dumb/UI/Presentat
 
 Only two smart components are class-based components: Home and App.  All others are React Functional Components, or FC as the alias.  
 
-The types of Props and State are passed in as type parameters e.g. <code>class Home extends Component<{}, AppState></code>, where AppState is defined as an interface within the same file.
+The types of Props and State are passed in as type parameters e.g. <code>class Home extends Component<{}, AppState></code>, where AppState is defined as an interface within the same file.  Props are defaulted to an empty object {} as none are received in this component.
 
 Props are passed in to Functional Components as type parameters e.g. `const FaceRecognition: React.FC<FaceRecognitionProps>`, where FaceRecognitionProps is defined as an interface within the same file.
 
