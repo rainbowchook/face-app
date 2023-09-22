@@ -123,13 +123,48 @@ Props are passed in to Functional Components as type parameters e.g. `const Face
 An Authentication Context was created by passing into <code>React.createContext</code> the <code>AuthContext</code> as a type parameter, and the AuthContext passed in contains the default values for the <code>currentUser</code> logged in, as well as the <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions.  
 
 #### AuthProvider
-The Authentication Provider is a typical React Functional Component, with <code>AuthProviderProps</code> passed in as a type parameter.  As it receives `children` as props, <code>AuthProviderProps</code> type was defined with a `children` property of type `ReactNode`.  
+The Authentication Provider is a typical React Functional Component, with <code>AuthProviderProps</code> passed in as a type parameter.  As it receives `children` as props, <code>AuthProviderProps</code> type was defined with a `children` property of type `ReactNode`.
+```typescript
+type AuthProviderProps = {
+  children?: ReactNode
+}
+```
 
 It provides the values of the <code>currentUser</code>, <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> to all children that wrapped within the enclosed `<AuthProvider> ... </AuthProvider>` tags used in the <code>App</code> component.
+```typescript
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState<null | User>(null)
+  const [sessionUser, setSessionUser] = useLocalStorage<null | User>(
+    'currentUser',
+    currentUser
+  )
+...
+  const authContextValue: AuthContextType = {
+    currentUser,
+    signIn,
+    signOut,
+    addEntriesCount,
+  }
+
+  return (
+    <AuthContext.Provider value={authContextValue}>
+      {children}
+    </AuthContext.Provider>
+  )
+}
+```
 
 The AuthProvider keeps two states, <code>currentUser</code> and <code>sessionUser</code>, with the <code>useState()</code> and <code>useLocalStorage()</code> hooks respectively.  The <code>currentUser</code> is the user that logged in via the app, and the <code>sessionUser</code> is the user that was stored in the local storage as the last user logged in.  
 
 A <code>useEffect()</code> hook will update the <code>sessionUser</code> to the <code>currentUser</code> if the <code>currentUser</code> changes.
+```typescript
+  useEffect(() => {
+    if (!sessionUser || sessionUser !== currentUser) {
+      setSessionUser(currentUser)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser])
+```
 
 Other functions defined in the <code>AuthProvider</code> are <code>signIn</code>, <code>signOut</code> and <code>addEntriesCount</code> functions:
 
